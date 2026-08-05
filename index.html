@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Paraderos · Texto Grande · Blanco</title>
+    <title>Paraderos · Rutas Reales GPS</title>
     <style>
         * {
             margin: 0;
@@ -19,15 +19,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 10px;
+            padding: 6px;
         }
         .app-container {
-            max-width: 520px;
+            max-width: 600px;
             width: 100%;
             background: #12121a;
             backdrop-filter: blur(8px);
-            border-radius: 32px;
-            padding: 20px 18px 26px;
+            border-radius: 24px;
+            padding: 10px 8px 14px;
             box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
@@ -39,27 +39,28 @@
             align-items: center;
             gap: 10px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            padding-bottom: 14px;
-            margin-bottom: 16px;
+            padding-bottom: 10px;
+            margin-bottom: 12px;
             flex-wrap: wrap;
         }
         h1 span {
             background: #1a5f7a;
             color: #ffffff !important;
             font-size: 1rem !important;
-            padding: 4px 16px;
+            padding: 4px 14px;
             border-radius: 40px;
             font-weight: 600;
         }
+
         .gps-status {
             display: flex;
             align-items: center;
             gap: 10px;
             background: #1a1a26;
-            padding: 12px 18px;
-            border-radius: 30px;
-            margin-bottom: 14px;
-            font-size: 1.1rem !important;
+            padding: 10px 14px;
+            border-radius: 28px;
+            margin-bottom: 12px;
+            font-size: 1.3rem !important;
             font-weight: 600;
             color: #ffffff !important;
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
@@ -82,39 +83,39 @@
             100% { opacity: 0.4; transform: scale(0.8); box-shadow: 0 0 0 0 rgba(42, 157, 143, 0); }
         }
         .gps-status #gpsTexto { color: #ffffff !important; }
-        .gps-status #gpsPrecision { color: #a0b0c0 !important; font-size: 0.9rem !important; }
-        .gps-status #horaActualDisplay { color: #ffffff !important; font-size: 1rem !important; }
+        .gps-status #gpsPrecision { color: #a0b0c0 !important; font-size: 1.1rem !important; }
+        .gps-status #horaActualDisplay { color: #ffffff !important; font-size: 1.2rem !important; }
 
         .route-selector {
             background: #1a1a26;
-            padding: 14px 16px;
-            border-radius: 28px;
+            padding: 10px 12px;
+            border-radius: 24px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            margin-bottom: 16px;
+            margin-bottom: 10px;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             border: 1px solid rgba(255,255,255,0.06);
         }
         .route-selector label {
             font-weight: 600;
             color: #ffffff !important;
-            font-size: 1.1rem !important;
+            font-size: 1.2rem !important;
             display: flex;
             align-items: center;
-            gap: 8px;
-            flex: 1 1 100px;
+            gap: 6px;
+            flex: 1 1 80px;
         }
         .route-selector select {
-            flex: 2 1 140px;
-            padding: 10px 16px;
+            flex: 2 1 120px;
+            padding: 8px 12px;
             border-radius: 40px;
             border: 1px solid #3a3a4a;
             background: #0d0d15;
             font-weight: 600;
             color: #ffffff !important;
-            font-size: 1.1rem !important;
+            font-size: 1.2rem !important;
             outline: none;
             cursor: pointer;
             -webkit-appearance: none;
@@ -128,81 +129,122 @@
             background: #12121a;
             color: #ffffff !important;
         }
-        .btn-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            flex: 1 1 100%;
-            margin-top: 6px;
-        }
-        .btn-primary {
-            background: #1a2a3a;
-            border: 1px solid rgba(255,255,255,0.08);
+
+        .btn-guardar {
+            background: #1a5a3a;
+            border: 1px solid rgba(255,255,255,0.1);
             color: #ffffff !important;
             font-weight: 700;
-            padding: 12px 16px;
+            padding: 10px 16px;
             border-radius: 40px;
-            font-size: 1rem !important;
+            font-size: 1.2rem !important;
             cursor: pointer;
             transition: all 0.2s ease;
             box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
             flex: 1 1 auto;
-            min-width: 60px;
+            min-width: 50px;
             touch-action: manipulation;
+            text-align: center;
         }
-        .btn-primary:active { transform: scale(0.95); }
-        .btn-primary:hover { background: #1f3a4a; border-color: rgba(255,255,255,0.12); }
-        .btn-silenciar { background: #2a2a3a; }
-        .btn-silenciar:hover { background: #3a3a4a; }
-        .btn-voz { background: #1a3a2a; }
-        .btn-voz:hover { background: #1f4a35; }
-        .btn-gps { background: #0d2a2a; }
-        .btn-gps:hover { background: #143a3a; }
+        .btn-guardar:active { transform: scale(0.95); }
+        .btn-guardar:hover { background: #1f6a4a; border-color: rgba(255,255,255,0.15); }
+        .btn-guardar:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
 
-        .voz-selector-movil {
+        .menu-hamburguesa {
+            position: relative;
+            display: inline-block;
+        }
+        .menu-hamburguesa .menu-btn {
+            background: #1a2a3a;
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #ffffff !important;
+            font-size: 1.8rem !important;
+            padding: 4px 14px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            line-height: 1;
+        }
+        .menu-hamburguesa .menu-btn:hover {
+            background: #1f3a4a;
+        }
+        .menu-hamburguesa .menu-contenido {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: #1a1a26;
+            min-width: 200px;
+            border-radius: 20px;
+            padding: 10px 14px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.08);
+            z-index: 1000;
+            margin-top: 6px;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .menu-hamburguesa .menu-contenido.abierto {
+            display: flex;
+        }
+        .menu-hamburguesa .menu-contenido .btn-primary {
+            background: #1a2a3a;
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #ffffff !important;
+            font-weight: 700;
+            padding: 8px 14px;
+            border-radius: 40px;
+            font-size: 1rem !important;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            text-align: center;
+        }
+        .menu-hamburguesa .menu-contenido .btn-primary:active { transform: scale(0.95); }
+        .menu-hamburguesa .menu-contenido .btn-primary:hover { background: #1f3a4a; border-color: rgba(255,255,255,0.12); }
+        .menu-hamburguesa .menu-contenido .btn-silenciar { background: #2a2a3a; }
+        .menu-hamburguesa .menu-contenido .btn-silenciar:hover { background: #3a3a4a; }
+        .menu-hamburguesa .menu-contenido .btn-voz { background: #1a3a2a; }
+        .menu-hamburguesa .menu-contenido .btn-voz:hover { background: #1f4a35; }
+        .menu-hamburguesa .menu-contenido .voz-selector {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
-            background: #1a1a26;
-            padding: 10px 16px;
-            border-radius: 30px;
-            margin-bottom: 12px;
-            align-items: center;
-            border: 1px solid rgba(255,255,255,0.06);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-        .voz-selector-movil .label {
-            font-weight: 600;
-            color: #ffffff !important;
-            font-size: 1rem !important;
-            margin-right: 6px;
-        }
-        .voz-btn {
-            border: 1px solid rgba(255,255,255,0.08);
+            gap: 4px;
             background: #0d0d15;
-            padding: 8px 16px;
+            padding: 6px 10px;
             border-radius: 30px;
-            font-size: 0.95rem !important;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .menu-hamburguesa .menu-contenido .voz-selector .voz-btn {
+            border: 1px solid rgba(255,255,255,0.08);
+            background: transparent;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.85rem !important;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
-            color: #d0dce8;
-            touch-action: manipulation;
-            flex: 1 1 auto;
-            min-width: 55px;
+            color: #a0b0c0;
+            flex: 1;
+            text-align: center;
         }
-        .voz-btn:active { transform: scale(0.95); }
-        .voz-btn:hover { background: #1a1a2a; }
-        .voz-btn.activa-mujer { background: #4a2a4a; border-color: #6a3a6a; color: #ffffff !important; }
-        .voz-btn.activa-hombre { background: #1a2a4a; border-color: #2a4a6a; color: #ffffff !important; }
-        .voz-btn.activa-auto { background: #1a3a2a; border-color: #2a5a3a; color: #ffffff !important; }
+        .menu-hamburguesa .menu-contenido .voz-selector .voz-btn.activa-mujer { background: #4a2a4a; border-color: #6a3a6a; color: #ffffff !important; }
+        .menu-hamburguesa .menu-contenido .voz-selector .voz-btn.activa-hombre { background: #1a2a4a; border-color: #2a4a6a; color: #ffffff !important; }
+        .menu-hamburguesa .menu-contenido .voz-selector .voz-btn.activa-auto { background: #1a3a2a; border-color: #2a5a3a; color: #ffffff !important; }
+        .menu-hamburguesa .menu-contenido .separador {
+            border-top: 1px solid rgba(255,255,255,0.06);
+            margin: 4px 0;
+        }
 
         .paradero-grid {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            margin: 12px 0 14px;
-            max-height: 340px;
+            gap: 5px;
+            margin: 8px 0 10px;
+            max-height: 350px;
             overflow-y: auto;
             padding-right: 2px;
             -webkit-overflow-scrolling: touch;
@@ -214,12 +256,12 @@
         .paradero-card {
             background: #16161f;
             border-radius: 40px 12px 12px 40px;
-            padding: 12px 16px;
+            padding: 8px 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             box-shadow: 0 1px 6px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.04);
-            border-left: 6px solid #2a3a4a;
+            border-left: 5px solid #2a3a4a;
             flex-wrap: wrap;
             gap: 4px;
             transition: all 0.3s ease;
@@ -265,25 +307,43 @@
             border-left-color: #2a7ad8;
             animation: parpadeoAzul 1.2s ease-in-out infinite;
         }
+        .paradero-card .btn-guardar-mini {
+            background: #1a5a3a;
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #ffffff !important;
+            font-weight: 700;
+            padding: 3px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem !important;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            touch-action: manipulation;
+        }
+        .paradero-card .btn-guardar-mini:active { transform: scale(0.95); }
+        .paradero-card .btn-guardar-mini:hover { background: #1f6a4a; }
+        .paradero-card .btn-guardar-mini:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
         .paradero-info {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
             flex: 1 1 60%;
         }
         .paradero-nombre {
             font-weight: 700;
-            font-size: 1.2rem !important;
+            font-size: 1.1rem !important;
             color: #ffffff !important;
-            min-width: 60px;
+            min-width: 50px;
         }
         .paradero-nombre.destino-label {
             color: #f5d060 !important;
         }
         .horario-llegada {
             background: #1a1a26;
-            padding: 4px 14px;
+            padding: 3px 12px;
             border-radius: 50px;
             font-size: 1rem !important;
             font-weight: 600;
@@ -291,19 +351,19 @@
             border: 1px solid rgba(255,255,255,0.06);
         }
         .distancia {
-            font-size: 0.9rem !important;
+            font-size: 0.85rem !important;
             color: #a0b0c0 !important;
             background: #1a1a26;
-            padding: 3px 12px;
+            padding: 2px 10px;
             border-radius: 30px;
             border: 1px solid rgba(255,255,255,0.04);
         }
         .diferencia {
-            font-size: 1.05rem !important;
+            font-size: 1rem !important;
             font-weight: 700;
-            padding: 4px 14px;
+            padding: 3px 12px;
             border-radius: 30px;
-            min-width: 55px;
+            min-width: 45px;
             text-align: center;
             border: 1px solid transparent;
         }
@@ -314,14 +374,14 @@
         .estado-badge {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             font-weight: 600;
-            font-size: 1rem !important;
+            font-size: 0.95rem !important;
             color: #d0dce8;
         }
         .estado-badge .dot {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 20px;
             display: inline-block;
         }
@@ -339,17 +399,17 @@
         .mensaje-aviso {
             background: #0d0d15;
             color: #ffffff !important;
-            padding: 14px 20px;
+            padding: 10px 16px;
             border-radius: 40px;
             font-weight: 600;
-            margin-top: 10px;
+            margin-top: 8px;
             text-align: center;
-            font-size: 1.1rem !important;
-            min-height: 50px;
+            font-size: 1.2rem !important;
+            min-height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
             border: 1px solid rgba(255,255,255,0.06);
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
@@ -359,28 +419,28 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.9rem !important;
+            font-size: 0.85rem !important;
             color: #a0b0c0 !important;
-            margin-top: 10px;
+            margin-top: 8px;
             border-top: 1px solid rgba(255,255,255,0.06);
-            padding-top: 10px;
+            padding-top: 8px;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 4px;
         }
         .footer-time .alarma-status {
             background: #1a1a26;
-            padding: 4px 14px;
+            padding: 3px 12px;
             border-radius: 30px;
             font-weight: 600;
             color: #d0dce8 !important;
-            font-size: 0.9rem !important;
+            font-size: 0.85rem !important;
             border: 1px solid rgba(255,255,255,0.06);
         }
         .voz-indicador {
-            padding: 4px 14px;
+            padding: 3px 12px;
             border-radius: 30px;
             font-weight: 600;
-            font-size: 0.9rem !important;
+            font-size: 0.85rem !important;
             color: #ffffff !important;
             border: 1px solid rgba(255,255,255,0.08);
         }
@@ -389,31 +449,49 @@
         .voz-indicador.mujer { background: #3a1a3a; border-color: #5a2a5a; }
         .voz-indicador.hombre { background: #1a2a3a; border-color: #2a4a5a; }
         .voz-nombre {
-            font-size: 0.9rem !important;
+            font-size: 0.85rem !important;
             color: #8a9aaa !important;
             text-align: center;
-            margin-top: 4px;
+            margin-top: 2px;
         }
-        .hora-actual { font-weight: 600; color: #ffffff !important; }
         .badge-destino {
             background: #d4a02a;
             color: #0a0a0f !important;
-            font-size: 0.8rem !important;
+            font-size: 0.7rem !important;
             font-weight: 700;
             padding: 2px 12px;
             border-radius: 30px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        @media (max-width: 400px) {
-            .app-container { padding: 12px 10px; }
-            .btn-primary { font-size: 0.85rem !important; padding: 10px 12px; }
-            .paradero-nombre { font-size: 1rem !important; min-width: 40px; }
-            .voz-btn { font-size: 0.8rem !important; padding: 6px 10px; min-width: 45px; }
-            .diferencia { font-size: 0.85rem !important; padding: 3px 8px; min-width: 40px; }
-            .mensaje-aviso { font-size: 0.95rem !important; }
-            h1 { font-size: 1.6rem !important; }
-            .gps-status { font-size: 0.9rem !important; }
+        .badge-coordenada {
+            background: #2a4a6a;
+            color: #ffffff !important;
+            font-size: 0.6rem !important;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 30px;
+        }
+
+        @media (max-width: 480px) {
+            .app-container { padding: 6px 4px; border-radius: 16px; }
+            h1 { font-size: 1.4rem !important; }
+            h1 span { font-size: 0.8rem !important; }
+            .gps-status { font-size: 1rem !important; padding: 6px 10px; }
+            .gps-status #gpsPrecision { font-size: 0.8rem !important; }
+            .route-selector label { font-size: 1rem !important; }
+            .route-selector select { font-size: 1rem !important; padding: 6px 10px; }
+            .btn-guardar { font-size: 0.9rem !important; padding: 8px 12px; }
+            .paradero-nombre { font-size: 0.9rem !important; }
+            .horario-llegada { font-size: 0.8rem !important; }
+            .distancia { font-size: 0.7rem !important; }
+            .diferencia { font-size: 0.8rem !important; padding: 2px 8px; min-width: 35px; }
+            .estado-badge { font-size: 0.8rem !important; }
+            .mensaje-aviso { font-size: 1rem !important; padding: 8px 12px; }
+            .footer-time { font-size: 0.7rem !important; }
+            .voz-indicador { font-size: 0.7rem !important; }
+            .menu-hamburguesa .menu-contenido { min-width: 180px; right: 0; left: auto; }
+            .menu-hamburguesa .menu-btn { font-size: 1.4rem !important; padding: 2px 10px; }
         }
     </style>
 </head>
@@ -426,9 +504,9 @@
 
         <div class="gps-status" id="gpsStatus">
             <span class="dot-gps inactivo" id="gpsDot"></span>
-            <span id="gpsTexto">📍 Esperando ubicación...</span>
+            <span id="gpsTexto">📍 Iniciando GPS...</span>
             <span id="gpsPrecision" style="margin-left:auto;"></span>
-            <span id="horaActualDisplay" style="margin-left:8px;">--:--</span>
+            <span id="horaActualDisplay" style="margin-left:6px;">--:--</span>
         </div>
 
         <div class="route-selector">
@@ -436,20 +514,23 @@
                 Ruta
                 <select id="rutaSelect"></select>
             </label>
-            <div class="btn-group">
-                <button class="btn-primary" id="reiniciarBtn">Reiniciar</button>
-                <button class="btn-primary btn-silenciar" id="silenciarBtn">Silenciar</button>
-                <button class="btn-primary btn-voz" id="vozBtn">Voz ON</button>
-                <button class="btn-primary btn-gps" id="gpsBtn">GPS</button>
+            <button class="btn-guardar" id="btnGuardarGlobal">📌 Guardar Ubicación</button>
+            <div class="menu-hamburguesa">
+                <button class="menu-btn" id="menuToggle">☰</button>
+                <div class="menu-contenido" id="menuContenido">
+                    <button class="btn-primary" id="reiniciarBtn">🔄 Reiniciar</button>
+                    <button class="btn-primary btn-silenciar" id="silenciarBtn">🔇 Silenciar</button>
+                    <button class="btn-primary btn-voz" id="vozBtn">🔊 Voz ON</button>
+                    <div class="separador"></div>
+                    <div class="voz-selector">
+                        <button class="voz-btn activa-mujer" id="vozMujerBtn">👩 Femenina</button>
+                        <button class="voz-btn" id="vozHombreBtn">👨 Masculina</button>
+                        <button class="voz-btn" id="vozAutoBtn">🤖 Auto</button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="voz-selector-movil">
-            <span class="label">Voz:</span>
-            <button class="voz-btn activa-mujer" id="vozMujerBtn">Femenina</button>
-            <button class="voz-btn" id="vozHombreBtn">Masculina</button>
-            <button class="voz-btn" id="vozAutoBtn">Auto</button>
-        </div>
         <div class="voz-nombre" id="vozNombreMostrar">Voz: Cargando...</div>
 
         <div id="paraderoContainer" class="paradero-grid"></div>
@@ -470,87 +551,88 @@
             "use strict";
 
             // ============================================================
-            //  RUTAS CON CAMPAMENTO IMCO - CERRO VERDE A LAS 7:00 AM
+            //  RUTAS CON COORDENADAS REALES DEL KML
             // ============================================================
             const DESTINO_FINAL = {
                 nombre: "Campamento IMCO - Cerro Verde",
                 hora: "7:00",
-                lat: -16.5400,
-                lng: -71.5900
+                lat: -16.4535542,
+                lng: -71.6148412
             };
 
             const rutasData = {
                 ruta1: {
                     nombre: "Evitamiento con Aviación",
                     paraderos: [
-                        { nombre: "Evitamiento con Aviación", hora: "5:25", lat: -16.3989, lng: -71.5370 },
-                        { nombre: "Frente a la Iglesia Zamácola", hora: "5:29", lat: -16.4020, lng: -71.5400 },
-                        { nombre: "Metro", hora: "5:33", lat: -16.4070, lng: -71.5430 },
-                        { nombre: "Real Plaza", hora: "5:38", lat: -16.4120, lng: -71.5480 },
-                        { nombre: "Tiabaya", hora: "5:55", lat: -16.4200, lng: -71.5550 },
-                        { nombre: "Plaza Alto Cerro Verde", hora: "6:05", lat: -16.4250, lng: -71.5600 },
+                        { nombre: "Evitamiento con Aviación", hora: "5:25", lat: -16.3428196, lng: -71.5812588 },
+                        { nombre: "Frente a la Iglesia Zamácola", hora: "5:29", lat: -16.3541564, lng: -71.5678788 },
+                        { nombre: "Paradero Frente a Grifo Primax", hora: "5:33", lat: -16.3645424, lng: -71.561284 },
+                        { nombre: "Metro", hora: "5:37", lat: -16.3755462, lng: -71.5578498 },
+                        { nombre: "Paradero Socosani", hora: "5:41", lat: -16.3832443, lng: -71.5564022 },
+                        { nombre: "Real Plaza", hora: "5:45", lat: -16.3893312, lng: -71.5487669 },
                         { ...DESTINO_FINAL }
                     ]
                 },
                 ruta2: {
                     nombre: "Mercado 3 de Octubre",
                     paraderos: [
-                        { nombre: "Mercado 3 de Octubre", hora: "5:25", lat: -16.3900, lng: -71.5300 },
-                        { nombre: "Grifo San Fernando", hora: "5:28", lat: -16.3930, lng: -71.5330 },
-                        { nombre: "Comisaría Ciudad Mi Trabajo", hora: "5:30", lat: -16.3960, lng: -71.5350 },
-                        { nombre: "Colegio Juan Pablo", hora: "5:40", lat: -16.4000, lng: -71.5400 },
-                        { nombre: "BCP", hora: "5:43", lat: -16.4050, lng: -71.5450 },
-                        { nombre: "Tiabaya", hora: "5:55", lat: -16.4200, lng: -71.5550 },
-                        { nombre: "Plaza Alto Cerro Verde", hora: "6:05", lat: -16.4250, lng: -71.5600 },
+                        { nombre: "Mercado 3 de Octubre", hora: "5:25", lat: -16.4434523, lng: -71.5183875 },
+                        { nombre: "Grifo San Fernando", hora: "5:28", lat: -16.4418899, lng: -71.5287916 },
+                        { nombre: "Comisaría Ciudad Mi Trabajo", hora: "5:31", lat: -16.4482283, lng: -71.5324965 },
+                        { nombre: "Colegio Juan Pablo", hora: "5:35", lat: -16.4475529, lng: -71.5515482 },
+                        { nombre: "BCP", hora: "5:39", lat: -16.4396019, lng: -71.5593696 },
+                        { nombre: "Puente Bailey", hora: "5:43", lat: -16.4434122, lng: -71.5735127 },
+                        { nombre: "Tiabaya", hora: "5:48", lat: -16.4496891, lng: -71.5880934 },
                         { ...DESTINO_FINAL }
                     ]
                 },
                 ruta3: {
-                    nombre: "Puente Santa Rosa",
+                    nombre: "MTC",
                     paraderos: [
-                        { nombre: "Puente Santa Rosa", hora: "5:25", lat: -16.3850, lng: -71.5250 },
-                        { nombre: "Plaza Umachiri", hora: "5:29", lat: -16.3880, lng: -71.5280 },
-                        { nombre: "Óvalo Sepúlveda", hora: "5:32", lat: -16.3920, lng: -71.5320 },
-                        { nombre: "Tablón", hora: "5:38", lat: -16.3980, lng: -71.5380 },
-                        { nombre: "Óvalo Mariscal Castilla", hora: "5:42", lat: -16.4050, lng: -71.5420 },
-                        { nombre: "Laive", hora: "5:50", lat: -16.4150, lng: -71.5500 },
+                        { nombre: "MTC", hora: "5:25", lat: -16.4220651, lng: -71.5076676 },
+                        { nombre: "Reservorio Guardia Civil", hora: "5:29", lat: -16.4255939, lng: -71.5148485 },
+                        { nombre: "Grifo Monterrey", hora: "5:33", lat: -16.4290732, lng: -71.523866 },
+                        { nombre: "Óvalo Cementerio", hora: "5:37", lat: -16.4303693, lng: -71.5331784 },
+                        { nombre: "Óvalo Avelino", hora: "5:41", lat: -16.4265002, lng: -71.5330254 },
+                        { nombre: "Av Los Incas cn Alcides Carreón", hora: "5:45", lat: -16.4170578, lng: -71.5334866 },
+                        { nombre: "Laive", hora: "5:50", lat: -16.4188171, lng: -71.5478539 },
+                        { nombre: "Tiabaya", hora: "5:55", lat: -16.4497443, lng: -71.5881142 },
                         { ...DESTINO_FINAL }
                     ]
                 },
                 ruta4: {
-                    nombre: "Óvalo Rocoto",
+                    nombre: "Puente Santa Rosa",
                     paraderos: [
-                        { nombre: "Óvalo Rocoto", hora: "5:22", lat: -16.3800, lng: -71.5200 },
-                        { nombre: "Políclinico Espíritu Santo", hora: "5:28", lat: -16.3850, lng: -71.5250 },
-                        { nombre: "Av. Progreso con Av. Arequipa", hora: "5:30", lat: -16.3900, lng: -71.5300 },
-                        { nombre: "Puente Grau", hora: "5:32", lat: -16.3950, lng: -71.5350 },
-                        { nombre: "Salaverry", hora: "5:37", lat: -16.4000, lng: -71.5400 },
-                        { nombre: "Laive", hora: "5:50", lat: -16.4150, lng: -71.5500 },
-                        { nombre: "Calicanto", hora: "5:53", lat: -16.4180, lng: -71.5530 },
-                        { nombre: "Tiabaya", hora: "5:55", lat: -16.4200, lng: -71.5550 },
-                        { nombre: "Plaza Alto Cerro Verde", hora: "6:05", lat: -16.4250, lng: -71.5600 },
+                        { nombre: "Puente Santa Rosa", hora: "5:25", lat: -16.4099308, lng: -71.5054871 },
+                        { nombre: "Plaza Umachiri", hora: "5:29", lat: -16.4003871, lng: -71.5069112 },
+                        { nombre: "Óvalo Sepúlveda", hora: "5:33", lat: -16.3996357, lng: -71.5112349 },
+                        { nombre: "Tablón", hora: "5:37", lat: -16.4002, lng: -71.5206493 },
+                        { nombre: "Óvalo Mariscal Castilla", hora: "5:41", lat: -16.4019445, lng: -71.5180315 },
+                        { nombre: "Laive", hora: "5:48", lat: -16.4187771, lng: -71.5478111 },
                         { ...DESTINO_FINAL }
                     ]
                 },
                 ruta5: {
-                    nombre: "MTC",
+                    nombre: "Óvalo del Rocoto",
                     paraderos: [
-                        { nombre: "MTC", hora: "5:27", lat: -16.3820, lng: -71.5220 },
-                        { nombre: "Reservorio Guardia Civil", hora: "5:30", lat: -16.3870, lng: -71.5270 },
-                        { nombre: "Grifo Monterrey", hora: "5:32", lat: -16.3920, lng: -71.5320 },
-                        { nombre: "Óvalo Cementerio La Apacheta", hora: "5:35", lat: -16.3970, lng: -71.5370 },
-                        { nombre: "Óvalo Avelino", hora: "5:37", lat: -16.4020, lng: -71.5420 },
-                        { nombre: "Avenida Los Incas con Alcides Carreón", hora: "5:40", lat: -16.4080, lng: -71.5480 },
-                        { nombre: "Laive", hora: "5:50", lat: -16.4150, lng: -71.5500 },
+                        { nombre: "Óvalo del Rocoto", hora: "5:25", lat: -16.3832967, lng: -71.524777 },
+                        { nombre: "Políclinico Espíritu Santo", hora: "5:29", lat: -16.3853403, lng: -71.5210123 },
+                        { nombre: "Av. Progreso con Av. Arequipa", hora: "5:33", lat: -16.3895666, lng: -71.5268201 },
+                        { nombre: "Puente Grau", hora: "5:38", lat: -16.3935668, lng: -71.5374629 },
+                        { nombre: "Salaverry", hora: "5:43", lat: -16.4061582, lng: -71.5398968 },
+                        { nombre: "Laive", hora: "5:50", lat: -16.4188171, lng: -71.5478539 },
                         { ...DESTINO_FINAL }
                     ]
                 },
                 ruta6: {
-                    nombre: "Av. Perú c/n Av. Los Incas",
+                    nombre: "Puente Santa Rosa (Variante)",
                     paraderos: [
-                        { nombre: "Av. Perú c/n Av. Los Incas", hora: "5:35", lat: -16.4050, lng: -71.5450 },
-                        { nombre: "Romancero", hora: "5:40", lat: -16.4100, lng: -71.5480 },
-                        { nombre: "Laive", hora: "5:50", lat: -16.4150, lng: -71.5500 },
+                        { nombre: "Puente Santa Rosa", hora: "5:25", lat: -16.4099386, lng: -71.5054923 },
+                        { nombre: "Plaza Umachiri", hora: "5:29", lat: -16.4004009, lng: -71.5069372 },
+                        { nombre: "Óvalo Sepúlveda", hora: "5:33", lat: -16.3996578, lng: -71.5112368 },
+                        { nombre: "Tablón", hora: "5:37", lat: -16.4001777, lng: -71.5206319 },
+                        { nombre: "Óvalo Mariscal Castilla", hora: "5:41", lat: -16.4019126, lng: -71.5180298 },
+                        { nombre: "Laive", hora: "5:48", lat: -16.4188171, lng: -71.5478539 },
                         { ...DESTINO_FINAL }
                     ]
                 }
@@ -576,6 +658,7 @@
             let watchId = null;
             let RADIO_DETECCION = 80;
             let horaActualStr = "";
+            let horaSimulada = null;
 
             // DOM
             const rutaSelect = document.getElementById('rutaSelect');
@@ -592,18 +675,50 @@
             const reiniciarBtn = document.getElementById('reiniciarBtn');
             const silenciarBtn = document.getElementById('silenciarBtn');
             const vozBtn = document.getElementById('vozBtn');
-            const gpsBtn = document.getElementById('gpsBtn');
             const vozMujerBtn = document.getElementById('vozMujerBtn');
             const vozHombreBtn = document.getElementById('vozHombreBtn');
             const vozAutoBtn = document.getElementById('vozAutoBtn');
             const vozNombreMostrar = document.getElementById('vozNombreMostrar');
+            const btnGuardarGlobal = document.getElementById('btnGuardarGlobal');
+            const menuToggle = document.getElementById('menuToggle');
+            const menuContenido = document.getElementById('menuContenido');
 
             // ============================================================
-            //  FUNCIONES DE DIFERENCIA HORARIA
+            //  MENÚ HAMBURGUESA
             // ============================================================
-            function calcularDiferenciaHoraria(horaParadero) {
+            menuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                menuContenido.classList.toggle('abierto');
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.menu-hamburguesa')) {
+                    menuContenido.classList.remove('abierto');
+                }
+            });
+
+            // ============================================================
+            //  FUNCIONES DE TIEMPO
+            // ============================================================
+            function obtenerHoraActual() {
+                if (horaSimulada) return horaSimulada;
                 const ahora = new Date();
-                const minsAhora = ahora.getHours() * 60 + ahora.getMinutes();
+                return String(ahora.getHours()).padStart(2, '0') + ':' + String(ahora.getMinutes()).padStart(2, '0');
+            }
+
+            function obtenerMinutosActuales() {
+                const horaStr = obtenerHoraActual();
+                const partes = horaStr.split(':');
+                return parseInt(partes[0], 10) * 60 + parseInt(partes[1], 10);
+            }
+
+            function horaAMinutos(horaStr) {
+                const partes = horaStr.split(':');
+                return parseInt(partes[0], 10) * 60 + parseInt(partes[1], 10);
+            }
+
+            function calcularDiferenciaHoraria(horaParadero) {
+                const minsAhora = obtenerMinutosActuales();
                 const minsParadero = horaAMinutos(horaParadero);
                 return minsAhora - minsParadero;
             }
@@ -637,9 +752,6 @@
                     return;
                 }
 
-                gpsBtn.textContent = 'GPS...';
-                gpsBtn.disabled = true;
-
                 watchId = navigator.geolocation.watchPosition(
                     function(pos) {
                         gpsActivo = true;
@@ -648,11 +760,6 @@
                         gpsDot.className = 'dot-gps activo';
                         gpsTexto.textContent = `${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)}`;
                         gpsPrecision.textContent = `±${Math.round(precision)}m`;
-                        gpsBtn.textContent = 'GPS ON';
-                        gpsBtn.disabled = false;
-                        gpsBtn.style.background = '#0d3a3a';
-                        gpsBtn.style.borderColor = '#2a6a5a';
-
                         verificarProximidadGPS();
                         verificarHorarios();
                     },
@@ -661,31 +768,9 @@
                         gpsDot.className = 'dot-gps error';
                         gpsTexto.textContent = `Error: ${err.message}`;
                         gpsPrecision.textContent = '';
-                        gpsBtn.textContent = 'GPS OFF';
-                        gpsBtn.disabled = false;
-                        gpsBtn.style.background = '#2a2a3a';
-                        gpsBtn.style.borderColor = 'rgba(255,255,255,0.04)';
                     },
                     { enableHighAccuracy: true, timeout: 15000, maximumAge: 5000 }
                 );
-            }
-
-            function detenerGPS() {
-                if (watchId) { navigator.geolocation.clearWatch(watchId); watchId = null; }
-                gpsActivo = false;
-                ubicacionActual = null;
-                gpsDot.className = 'dot-gps inactivo';
-                gpsTexto.textContent = 'GPS detenido';
-                gpsPrecision.textContent = '';
-                gpsBtn.textContent = 'GPS OFF';
-                gpsBtn.style.background = '#2a2a3a';
-                gpsBtn.style.borderColor = 'rgba(255,255,255,0.04)';
-                for (let p of paraderosActuales) { p.cercano = false; }
-                renderizarParaderos();
-            }
-
-            function toggleGPS() {
-                if (gpsActivo) { detenerGPS(); } else { iniciarGPS(); }
             }
 
             function verificarProximidadGPS() {
@@ -719,6 +804,63 @@
                 }
                 renderizarParaderos();
             }
+
+            function guardarUbicacionParadero(index) {
+                if (!ubicacionActual) {
+                    alert('📍 No hay ubicación GPS disponible. Espera a que se active el GPS.');
+                    return;
+                }
+
+                const paradero = paraderosActuales[index];
+                if (!paradero) return;
+
+                paradero.lat = ubicacionActual.lat;
+                paradero.lng = ubicacionActual.lng;
+
+                mensajeDiv.innerHTML = `
+                    <span>✅</span> Coordenadas guardadas para <strong>${paradero.nombre}</strong>:<br>
+                    ${ubicacionActual.lat.toFixed(6)}, ${ubicacionActual.lng.toFixed(6)}
+                `;
+
+                renderizarParaderos();
+                const cards = container.querySelectorAll('.paradero-card');
+                if (cards[index]) cards[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                menuContenido.classList.remove('abierto');
+            }
+
+            window.guardarUbicacion = function(index) {
+                guardarUbicacionParadero(index);
+            };
+
+            btnGuardarGlobal.addEventListener('click', function() {
+                if (!ubicacionActual) {
+                    alert('📍 No hay ubicación GPS disponible.');
+                    return;
+                }
+
+                let masCercano = null;
+                let distMin = Infinity;
+                let indexCercano = -1;
+
+                for (let i = 0; i < paraderosActuales.length; i++) {
+                    const p = paraderosActuales[i];
+                    if (p.estado === 'pasado' || p.esDestino) continue;
+                    if (p.lat && p.lng) {
+                        const dist = calcularDistancia(ubicacionActual.lat, ubicacionActual.lng, p.lat, p.lng);
+                        if (dist < distMin) {
+                            distMin = dist;
+                            masCercano = p;
+                            indexCercano = i;
+                        }
+                    }
+                }
+
+                if (masCercano && indexCercano >= 0) {
+                    guardarUbicacionParadero(indexCercano);
+                } else {
+                    alert('⚠️ No hay paraderos disponibles para guardar ubicación.');
+                }
+            });
 
             // ============================================================
             //  VOCES
@@ -817,21 +959,6 @@
             // ============================================================
             //  FUNCIONES PRINCIPALES
             // ============================================================
-            function obtenerHoraActual() {
-                const ahora = new Date();
-                return String(ahora.getHours()).padStart(2, '0') + ':' + String(ahora.getMinutes()).padStart(2, '0');
-            }
-
-            function horaAMinutos(horaStr) {
-                const partes = horaStr.split(':');
-                return parseInt(partes[0], 10) * 60 + parseInt(partes[1], 10);
-            }
-
-            function minutosActuales() {
-                const ahora = new Date();
-                return ahora.getHours() * 60 + ahora.getMinutes();
-            }
-
             function cargarRuta(claveRuta) {
                 const data = rutasData[claveRuta];
                 if (!data) return;
@@ -857,13 +984,15 @@
 
             function renderizarParaderos() {
                 let html = '';
-                for (let p of paraderosActuales) {
+                for (let i = 0; i < paraderosActuales.length; i++) {
+                    const p = paraderosActuales[i];
                     let claseCard = 'paradero-card';
                     let dotClase = 'dot';
                     let estadoTexto = '';
                     let distanciaHtml = '';
                     let diferenciaHtml = '';
                     let badgeHtml = '';
+                    let coordsHtml = '';
 
                     const diff = calcularDiferenciaHoraria(p.hora);
                     p.diferencia = diff;
@@ -872,6 +1001,10 @@
                     if (p.esDestino) {
                         badgeHtml = `<span class="badge-destino">Destino</span>`;
                         claseCard += ' destino';
+                    }
+
+                    if (p.lat && p.lng) {
+                        coordsHtml = `<span class="badge-coordenada">📍 ${p.lat.toFixed(4)}, ${p.lng.toFixed(4)}</span>`;
                     }
 
                     if (p.estado === 'alert') {
@@ -905,17 +1038,27 @@
                         distanciaHtml = `<span class="distancia">${p.distancia}m</span>`;
                     }
 
+                    const btnGuardar = p.esDestino ? '' : `
+                        <button class="btn-guardar-mini" data-index="${i}" onclick="window.guardarUbicacion(${i})">
+                            📌 Guardar
+                        </button>
+                    `;
+
                     html += `
                         <div class="${claseCard}">
                             <div class="paradero-info">
                                 <span class="paradero-nombre ${p.esDestino ? 'destino-label' : ''}">${p.nombre}</span>
                                 ${badgeHtml}
+                                ${coordsHtml}
                                 <span class="horario-llegada">${p.hora}</span>
                                 ${distanciaHtml}
                                 ${diferenciaHtml}
                             </div>
-                            <div class="estado-badge">
-                                <span class="${dotClase}"></span> ${estadoTexto}
+                            <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;">
+                                ${btnGuardar}
+                                <div class="estado-badge">
+                                    <span class="${dotClase}"></span> ${estadoTexto}
+                                </div>
                             </div>
                         </div>
                     `;
@@ -924,7 +1067,7 @@
             }
 
             function verificarHorarios() {
-                const minutosAhora = minutosActuales();
+                const minutosAhora = obtenerMinutosActuales();
                 let hayAlert = false;
                 let nuevoAlertNombre = "";
 
@@ -996,19 +1139,19 @@
                 if (alerta) {
                     mensajeDiv.innerHTML = `
                         <span>🔔</span> Llegada a <strong>${alerta.nombre}</strong>! (${alerta.hora})
-                        <span style="background:rgba(255,255,255,0.08);padding:4px 16px;border-radius:40px;border:1px solid rgba(255,255,255,0.1);">Ahora!</span>
+                        <span style="background:rgba(255,255,255,0.08);padding:2px 14px;border-radius:40px;border:1px solid rgba(255,255,255,0.1);">Ahora!</span>
                     `;
                 } else if (horaDeEstar) {
                     mensajeDiv.innerHTML = `
                         <span>🔵</span> <strong>${horaDeEstar.nombre}</strong>! Ya deberías estar allí (${horaDeEstar.hora})
-                        <span style="background:rgba(42,122,216,0.2);padding:4px 16px;border-radius:40px;border:1px solid rgba(42,122,216,0.3);">Es hora!</span>
+                        <span style="background:rgba(42,122,216,0.2);padding:2px 14px;border-radius:40px;border:1px solid rgba(42,122,216,0.3);">Es hora!</span>
                     `;
                 } else if (cercano) {
                     mensajeDiv.innerHTML = `<span>📍</span> Estás cerca de <strong>${cercano.nombre}</strong>! (${cercano.distancia}m)`;
                 } else if (proximo) {
                     mensajeDiv.innerHTML = `
                         <span>⏳</span> Próximo: <strong>${proximo.nombre}</strong> a las ${proximo.hora}
-                        <span style="background:rgba(255,255,255,0.04);padding:4px 14px;border-radius:40px;font-size:0.9rem;border:1px solid rgba(255,255,255,0.06);">${diffMsg}</span>
+                        <span style="background:rgba(255,255,255,0.04);padding:2px 12px;border-radius:40px;font-size:0.85rem;border:1px solid rgba(255,255,255,0.06);">${diffMsg}</span>
                     `;
                 } else {
                     const todosPasados = paraderosActuales.every(p => p.estado === 'pasado');
@@ -1023,13 +1166,21 @@
             }
 
             // ============================================================
-            //  CONTROLES
+            //  CONTROLES (desde menú)
             // ============================================================
-            function reiniciarRuta() { detenerGPS(); cargarRuta(rutaSelect.value); verificarHorarios(); renderizarParaderos(); actualizarMensaje(); footerReloj.textContent = `${obtenerHoraActual()}`; ultimoAlertNombre = ""; if (synth) synth.cancel(); }
-            function cambiarRuta() { detenerGPS(); rutaActual = rutaSelect.value; cargarRuta(rutaActual); verificarHorarios(); renderizarParaderos(); actualizarMensaje(); footerReloj.textContent = `${obtenerHoraActual()}`; ultimoAlertNombre = ""; if (synth) synth.cancel(); }
-            function toggleSilenciar() { alarmaActivada = !alarmaActivada; if (alarmaActivada) tocarBip(800, 0.15, 0.15); actualizarMensaje(); silenciarBtn.textContent = alarmaActivada ? 'Silenciar' : 'Activar'; }
-            function toggleVoz() { vozActivada = !vozActivada; if (vozActivada) { setTimeout(() => hablar("Voz activada"), 300); } else { if (synth) synth.cancel(); } actualizarMensaje(); vozBtn.textContent = vozActivada ? 'Voz ON' : 'Voz OFF'; }
-            function setVozGenero(genero) { vozGenero = genero; cargarVoces(); if (vozActivada) { setTimeout(() => hablar("Voz seleccionada"), 400); } }
+            function reiniciarRuta() { cargarRuta(rutaSelect.value); verificarHorarios(); renderizarParaderos(); actualizarMensaje(); footerReloj.textContent = `${obtenerHoraActual()}`; ultimoAlertNombre = ""; if (synth) synth.cancel(); menuContenido.classList.remove('abierto'); }
+            function cambiarRuta() { rutaActual = rutaSelect.value; cargarRuta(rutaActual); verificarHorarios(); renderizarParaderos(); actualizarMensaje(); footerReloj.textContent = `${obtenerHoraActual()}`; ultimoAlertNombre = ""; if (synth) synth.cancel(); }
+            function toggleSilenciar() { alarmaActivada = !alarmaActivada; if (alarmaActivada) tocarBip(800, 0.15, 0.15); actualizarMensaje(); silenciarBtn.textContent = alarmaActivada ? '🔇 Silenciar' : '🔊 Activar'; menuContenido.classList.remove('abierto'); }
+            function toggleVoz() { vozActivada = !vozActivada; if (vozActivada) { setTimeout(() => hablar("Voz activada"), 300); } else { if (synth) synth.cancel(); } actualizarMensaje(); vozBtn.textContent = vozActivada ? '🔊 Voz ON' : '🔇 Voz OFF'; menuContenido.classList.remove('abierto'); }
+            function setVozGenero(genero) { vozGenero = genero; cargarVoces(); if (vozActivada) { setTimeout(() => hablar("Voz seleccionada"), 400); } menuContenido.classList.remove('abierto'); }
+
+            reiniciarBtn.addEventListener('click', reiniciarRuta);
+            silenciarBtn.addEventListener('click', toggleSilenciar);
+            vozBtn.addEventListener('click', toggleVoz);
+            vozMujerBtn.addEventListener('click', () => setVozGenero('mujer'));
+            vozHombreBtn.addEventListener('click', () => setVozGenero('hombre'));
+            vozAutoBtn.addEventListener('click', () => setVozGenero('auto'));
+            rutaSelect.addEventListener('change', cambiarRuta);
 
             // ============================================================
             //  INICIALIZACIÓN
@@ -1055,17 +1206,6 @@
                 intervaloHora = setInterval(() => { horaActualStr = obtenerHoraActual(); horaActualDisplay.textContent = `${horaActualStr}`; }, 1000);
             }
 
-            // EVENTOS
-            rutaSelect.addEventListener('change', cambiarRuta);
-            reiniciarBtn.addEventListener('click', reiniciarRuta);
-            silenciarBtn.addEventListener('click', toggleSilenciar);
-            vozBtn.addEventListener('click', toggleVoz);
-            gpsBtn.addEventListener('click', toggleGPS);
-            vozMujerBtn.addEventListener('click', () => setVozGenero('mujer'));
-            vozHombreBtn.addEventListener('click', () => setVozGenero('hombre'));
-            vozAutoBtn.addEventListener('click', () => setVozGenero('auto'));
-
-            // INICIO
             function init() {
                 llenarSelectRutas();
                 rutaActual = 'ruta1';
@@ -1079,6 +1219,10 @@
 
                 document.addEventListener('touchstart', () => { initAudio(); }, { once: true });
                 document.addEventListener('click', () => { initAudio(); }, { once: true });
+
+                setTimeout(function() {
+                    iniciarGPS();
+                }, 500);
             }
 
             init();
