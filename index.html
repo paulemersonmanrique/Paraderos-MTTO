@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Paraderos · Cerro Verde · Dark</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            min-height: 100vh;
+            background: #0a0a0f;
+            background: radial-gradient(ellipse at 50% 0%, #1a1a2e 0%, #0a0a0f 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+        .app-container {
+            max-width: 500px;
+            width: 100%;
+            background: #12121a;
+            backdrop-filter: blur(8px);
+            border-radius: 32px;
+            padding: 18px 16px 24px;
+            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        h1 {
+            font-size: 1.2rem;
+            font-weight: 650;
+            color: #e8edf5;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 12px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+        h1 span {
+            background: #1a5f7a;
+            color: #b0d4e8;
+            font-size: 0.6rem;
+            padding: 3px 12px;
+            border-radius: 40px;
+            font-weight: 500;
+        }
+        .gps-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #1a1a26;
+            padding: 8px 14px;
+            border-radius: 30px;
+            margin-bottom: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #a0b4c8;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.04);
+            flex-wrap: wrap;
+        }
+        .gps-status .dot-gps {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+        .dot-gps.activo { background: #2a9d8f; animation: pulse-gps 1.5s infinite; }
+        .dot-gps.inactivo { background: #3a3a4a; }
+        .dot-gps.error { background: #e07b2c; }
+        @keyframes pulse-gps {
+            0% { opacity: 0.4; transform: scale(0.8); box-shadow: 0 0 0 0 rgba(42, 157, 143, 0.3); }
+            50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 15px 5px rgba(42, 157, 143, 0.15); }
+            100% { opacity: 0.4; transform: scale(0.8); box-shadow: 0 0 0 0 rgba(42, 157, 143, 0); }
+        }
+        .route-selector {
+            background: #1a1a26;
+            padding: 12px 14px;
+            border-radius: 28px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            margin-bottom: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255,255,255,0.04);
+        }
+        .route-selector label {
+            font-weight: 550;
+            color: #a0b4c8;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1 1 80px;
+        }
+        .route-selector select {
+            flex: 2 1 120px;
+            padding: 8px 12px;
+            border-radius: 40px;
+            border: 1px solid #2a2a3a;
+            background: #0d0d15;
+            font-weight: 500;
+            color: #d0dce8;
+            font-size: 0.75rem;
+            outline: none;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        .route-selector select:focus {
+            border-color: #2a7a5a;
+            box-shadow: 0 0 0 2px rgba(42, 122, 90, 0.2);
+        }
+        .route-selector select option {
+            background: #12121a;
+            color: #d0dce8;
+        }
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            flex: 1 1 100%;
+            margin-top: 4px;
+        }
+        .btn-primary {
+            background: #1a2a3a;
+            border: 1px solid rgba(255,255,255,0.06);
+            color: #d0dce8;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 40px;
+            font-size: 0.65rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            flex: 1 1 auto;
+            min-width: 50px;
+            touch-action: manipulation;
+        }
+        .btn-primary:active { transform: scale(0.95); }
+        .btn-primary:hover { background: #1f3a4a; border-color: rgba(255,255,255,0.1); }
+        .btn-silenciar { background: #2a2a3a; }
+        .btn-silenciar:hover { background: #3a3a4a; }
+        .btn-voz { background: #1a3a2a; }
+        .btn-voz:hover { background: #1f4a35; }
+        .btn-gps { background: #0d2a2a; }
+        .btn-gps:hover { background: #143a3a; }
+
+        .voz-selector-movil {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            background: #1a1a26;
+            padding: 6px 12px;
+            border-radius: 30px;
+            margin-bottom: 10px;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.04);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .voz-selector-movil .label {
+            font-weight: 600;
+            color: #a0b4c8;
+            font-size: 0.7rem;
+            margin-right: 4px;
+        }
+        .voz-btn {
+            border: 1px solid rgba(255,255,255,0.06);
+            background: #0d0d15;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #a0b4c8;
+            touch-action: manipulation;
+            flex: 1 1 auto;
+            min-width: 45px;
+        }
+        .voz-btn:active { transform: scale(0.95); }
+        .voz-btn:hover { background: #1a1a2a; }
+        .voz-btn.activa-mujer { background: #4a2a4a; border-color: #6a3a6a; color: #e8b0d0; }
+        .voz-btn.activa-hombre { background: #1a2a4a; border-color: #2a4a6a; color: #90b8e8; }
+        .voz-btn.activa-auto { background: #1a3a2a; border-color: #2a5a3a; color: #90d8b0; }
+
+        .paradero-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin: 10px 0 12px;
+            max-height: 320px;
+            overflow-y: auto;
+            padding-right: 2px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .paradero-grid::-webkit-scrollbar { width: 4px; }
+        .paradero-grid::-webkit-scrollbar-track { background: #12121a; }
+        .paradero-grid::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 10px; }
+
+        .paradero-card {
+            background: #16161f;
+            border-radius: 40px 12px 12px 40px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.03);
+            border-left: 5px solid #2a3a4a;
+            flex-wrap: wrap;
+            gap: 3px;
+            transition: all 0.3s ease;
+        }
+        .paradero-card.parpadeo-azul {
+            border-left-color: #2a7ad8;
+            background: #0d1820;
+            box-shadow: 0 0 20px rgba(42, 122, 216, 0.08), 0 0 0 1px rgba(42, 122, 216, 0.15);
+            animation: parpadeoAzul 1.2s ease-in-out infinite;
+        }
+        @keyframes parpadeoAzul {
+            0% { border-left-color: #2a7ad8; background: #0d1820; box-shadow: 0 0 10px rgba(42, 122, 216, 0.05), 0 0 0 1px rgba(42, 122, 216, 0.1); }
+            50% { border-left-color: #5a9eff; background: #0d2030; box-shadow: 0 0 30px rgba(42, 122, 216, 0.25), 0 0 0 2px rgba(42, 122, 216, 0.3); }
+            100% { border-left-color: #2a7ad8; background: #0d1820; box-shadow: 0 0 10px rgba(42, 122, 216, 0.05), 0 0 0 1px rgba(42, 122, 216, 0.1); }
+        }
+        .paradero-card.alert {
+            border-left-color: #e07b2c;
+            background: #1a1a0d;
+            box-shadow: 0 4px 16px rgba(210, 120, 20, 0.08), 0 0 0 1px rgba(224, 123, 44, 0.2);
+            animation: parpadeoNaranja 0.8s ease-in-out infinite;
+        }
+        @keyframes parpadeoNaranja {
+            0% { border-left-color: #e07b2c; background: #1a1a0d; box-shadow: 0 0 10px rgba(224, 123, 44, 0.05), 0 0 0 1px rgba(224, 123, 44, 0.1); }
+            50% { border-left-color: #f5a623; background: #1f1f10; box-shadow: 0 0 30px rgba(224, 123, 44, 0.3), 0 0 0 2px rgba(224, 123, 44, 0.3); }
+            100% { border-left-color: #e07b2c; background: #1a1a0d; box-shadow: 0 0 10px rgba(224, 123, 44, 0.05), 0 0 0 1px rgba(224, 123, 44, 0.1); }
+        }
+        .paradero-card.passed {
+            border-left-color: #2a4a3a;
+            background: #0d1210;
+            opacity: 0.5;
+        }
+        .paradero-card.cercano {
+            border-left-color: #2a9d8f;
+            background: #0d1a18;
+            box-shadow: 0 4px 12px rgba(42, 157, 143, 0.08), 0 0 0 1px rgba(42, 157, 143, 0.15);
+        }
+        .paradero-card.destino {
+            border-left-color: #d4a02a;
+            background: #1a180d;
+            box-shadow: 0 0 20px rgba(212, 160, 42, 0.08), 0 0 0 1px rgba(212, 160, 42, 0.15);
+        }
+        .paradero-card.destino.parpadeo-azul {
+            border-left-color: #2a7ad8;
+            animation: parpadeoAzul 1.2s ease-in-out infinite;
+        }
+        .paradero-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            flex: 1 1 60%;
+        }
+        .paradero-nombre {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #d0dce8;
+            min-width: 50px;
+        }
+        .paradero-nombre.destino-label {
+            color: #f5d060;
+        }
+        .horario-llegada {
+            background: #1a1a26;
+            padding: 2px 10px;
+            border-radius: 50px;
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: #8090a0;
+            border: 1px solid rgba(255,255,255,0.04);
+        }
+        .distancia {
+            font-size: 0.6rem;
+            color: #8090a0;
+            background: #1a1a26;
+            padding: 2px 8px;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+        .diferencia {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 30px;
+            min-width: 45px;
+            text-align: center;
+            border: 1px solid transparent;
+        }
+        .diferencia.adelantado { background: #1a3a2a; color: #6ad8b0; border-color: #2a5a3a; }
+        .diferencia.atrasado { background: #3a1a1a; color: #f0a060; border-color: #5a2a2a; }
+        .diferencia.exacto { background: #1a2a3a; color: #80b8d8; border-color: #2a4a5a; }
+        .diferencia.pendiente { background: #1a1a26; color: #5a6a7a; border-color: #2a2a3a; }
+        .estado-badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 500;
+            font-size: 0.7rem;
+            color: #8090a0;
+        }
+        .estado-badge .dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        .dot.verde { background: #2a9d8f; }
+        .dot.naranja { background: #f5a623; animation: pulse-dot 0.8s infinite; }
+        .dot.azul { background: #2a7ad8; animation: pulse-dot 1.2s infinite; }
+        .dot.gris { background: #3a3a4a; }
+        .dot.oro { background: #d4a02a; }
+        @keyframes pulse-dot {
+            0% { opacity: 0.4; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.3); }
+            100% { opacity: 0.4; transform: scale(0.8); }
+        }
+
+        .mensaje-aviso {
+            background: #0d0d15;
+            color: #d0dce8;
+            padding: 10px 16px;
+            border-radius: 40px;
+            font-weight: 500;
+            margin-top: 8px;
+            text-align: center;
+            font-size: 0.75rem;
+            min-height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .mensaje-aviso strong { color: #e8edf5; }
+        .footer-time {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.55rem;
+            color: #5a6a7a;
+            margin-top: 8px;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            padding-top: 8px;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .footer-time .alarma-status {
+            background: #1a1a26;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-weight: 500;
+            color: #8090a0;
+            font-size: 0.55rem;
+            border: 1px solid rgba(255,255,255,0.04);
+        }
+        .voz-indicador {
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-weight: 500;
+            font-size: 0.55rem;
+            color: #d0dce8;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .voz-indicador.on { background: #1a3a2a; border-color: #2a5a3a; }
+        .voz-indicador.off { background: #1a1a26; border-color: #2a2a3a; color: #5a6a7a; }
+        .voz-indicador.mujer { background: #3a1a3a; border-color: #5a2a5a; }
+        .voz-indicador.hombre { background: #1a2a3a; border-color: #2a4a5a; }
+        .voz-nombre { font-size: 0.55rem; color: #4a5a6a; text-align: center; margin-top: 2px; }
+        .hora-actual { font-weight: 600; color: #b0c8d8; }
+        .badge-destino {
+            background: #d4a02a;
+            color: #0a0a0f;
+            font-size: 0.5rem;
+            font-weight: 700;
+            padding: 1px 8px;
+            border-radius: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        @media (max-width: 400px) {
+            .app-container { padding: 10px 8px; }
+            .btn-primary { font-size: 0.55rem; padding: 6px 8px; }
+            .paradero-nombre { font-size: 0.7rem; min-width: 40px; }
+            .voz-btn { font-size: 0.55rem; padding: 4px 8px; min-width: 40px; }
+            .diferencia { font-size: 0.55rem; padding: 2px 6px; min-width: 30px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <h1>
+            🏔️ Paraderos
+            <span id="rutaNombre">Ruta 1</span>
+        </h1>
+
+        <div class="gps-status" id="gpsStatus">
+            <span class="dot-gps inactivo" id="gpsDot"></span>
+            <span id="gpsTexto">📍 Esperando ubicación...</span>
+            <span id="gpsPrecision" style="font-size:0.55rem;color:#4a5a6a;margin-left:auto;"></span>
+            <span id="horaActualDisplay" style="font-size:0.65rem;font-weight:600;color:#b0c8d8;margin-left:8px;">🕐 --:--</span>
+        </div>
+
+        <div class="route-selector">
+            <label>
+                🗺️ Ruta
+                <select id="rutaSelect"></select>
+            </label>
+            <div class="btn-group">
+                <button class="btn-primary" id="reiniciarBtn">🔄 Reiniciar</button>
+                <button class="btn-primary btn-silenciar" id="silenciarBtn">🔇 Silenciar</button>
+                <button class="btn-primary btn-voz" id="vozBtn">🔊 Voz ON</button>
+                <button class="btn-primary btn-gps" id="gpsBtn">📍 GPS</button>
+            </div>
+        </div>
+
+        <div class="voz-selector-movil">
+            <span class="label">🗣️ Voz:</span>
+            <button class="voz-btn activa-mujer" id="vozMujerBtn">👩 Femenina</button>
+            <button class="voz-btn" id="vozHombreBtn">👨 Masculina</button>
+            <button class="voz-btn" id="vozAutoBtn">🤖 Auto</button>
+        </div>
+        <div class="voz-nombre" id="vozNombreMostrar">Voz: Cargando...</div>
+
+        <div id="paraderoContainer" class="paradero-grid"></div>
+
+        <div id="mensajeAviso" class="mensaje-aviso">
+            <span>⏳</span> Esperando siguiente llegada...
+        </div>
+
+        <div class="footer-time">
+            <span id="relojFooter">⏱️ Actualizado</span>
+            <span class="alarma-status" id="alarmaStatus">🔊 Alarma</span>
+            <span class="voz-indicador on" id="vozStatus">🗣️ ON</span>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            "use strict";
+
+            // ============================================================
+            //  RUTAS CON CAMPAMENTO IMCO - CERRO VERDE A LAS 7:00 AM
+            //  Coordenadas de ejemplo para Cerro Verde
+            // ============================================================
+            const DESTINO_FINAL = {
+                nombre: "🏔️ Campamento IMCO - Cerro Verde",
+                hora: "7:00",
+                lat: -16.5400,
+                lng: -71.5900
+            };
+
+            const rutasData = {
+                ruta1: {
+                    nombre: "Evitamiento con Aviación",
+                    paraderos: [
+                        { nombre: "Evitamiento con Aviación", hora: "5:25", lat: -16.3989, lng: -71.5370 },
+                        { nombre: "Frente a la Iglesia Zamácola", hora: "5:29", lat: -16.4020, lng: -71.5400 },
+                        { nombre: "Metro", hora: "5:33", lat: -16.4070, lng: -71.5430 },
+                        { nombre: "Real Plaza", hora: "5:38", lat: -16.4120, lng: -71.5480 },
+                        { nombre: "Tiabaya", hora: "5:55", lat: -16.4200, lng: -71.5550 },
+                        { nombre: "Plaza Alto Cerro Verde", hora: "6:05", lat: -16.4250, lng: -71.5600 },
+                        { ...DESTINO_FINAL }
+                    ]
+                },
+                ruta2: {
+                    nombre: "Mercado 3 de Octubre",
+                    paraderos: [
+                        { nombre: "Mercado 3 de Octubre", hora: "5:25", lat: -16.3900, lng: -71.5300 },
+                        { nombre: "Grifo San Fernando", hora: "5:28", lat: -16.3930, lng: -71.5330 },
+                        { nombre: "Comisaría Ciudad Mi Trabajo", hora: "5:30", lat: -16.3960, lng: -71.5350 },
+                        { nombre: "Colegio Juan Pablo", hora: "5:40", lat: -16.4000, lng: -71.5400 },
+                        { nombre: "BCP", hora: "5:43", lat: -16.4050, lng: -71.5450 },
+                        { nombre: "Tiabaya", hora: "5:55", lat: -16.4200, lng: -71.5550 },
+                        { nombre: "Plaza Alto Cerro Verde", hora: "6:05", lat: -16.4250, lng: -71.5600 },
+                        { ...DESTINO_FINAL }
+                    ]
+                },
+                ruta3: {
+                    nombre: "Puente Santa Rosa",
+                    paraderos: [
+                        { nombre: "Puente Santa Rosa", hora: "5:25", lat: -16.3850, lng: -71.5250 },
+                        { nombre: "Plaza Umachiri", hora: "5:29", lat: -16.3880, lng: -71.5280 },
+                        { nombre: "Óvalo Sepúlveda", hora: "5:32", lat: -16.3920, lng: -71.5320 },
+                        { nombre: "Tablón", hora: "5:38", lat: -16.3980, lng: -71.5380 },
+                        { nombre: "Óvalo Mariscal Castilla", hora: "5:42", lat: -16.4050, lng: -71.5420 },
+                        { nombre: "Laive", hora: "5:50", lat: -16.4150, lng: -71.5500 },
+                        { ...DESTINO_FINAL }
+                    ]
+                },
+                ruta4: {
+                    nombre: "Óvalo Rocoto",
+                    paraderos: [
+                        { nombre: "Óvalo Rocoto", hora: "5:22", lat: -16.3800, lng: -71.5200 },
+                        { nombre: "Políclinico Espíritu Santo", hora: "5:28", lat: -16.3850, lng: -71.5250 },
+                        { nombre: "Av. Progreso con Av. Arequipa", hora: "5:30", lat: -16.3900, lng: -71.5300 },
+                        { nombre: "Puente Grau", hora: "5:32", lat: -16.3950, lng: -71.5350 },
+                        { nombre: "Salaverry", hora: "5:37", lat: -16.4000, lng: -71.5400 },
+                        { nombre: "Laive", hora: "5:50", lat: -16.4150, lng: -71.5500 },
+                        { nombre: "Calicanto", hora: "5:53", lat: -16.4180, lng: -71.5530 },
+                        { nombre: "Tiabaya", hora: "5:55", lat: -16.4200, lng: -71.5550 },
+                        { nombre: "Plaza Alto Cerro Verde", hora: "6:05", lat: -16.4250, lng: -71.5600 },
+                        { ...DESTINO_FINAL }
+                    ]
+                },
+                ruta5: {
+                    nombre: "MTC",
+                    paraderos: [
+                        { nombre: "MTC", hora: "5:27", lat: -16.3820, lng: -71.5220 },
+                        { nombre: "Reservorio Guardia Civil", hora: "5:30", lat: -16.3870, lng: -71.5270 },
+                        { nombre: "Grifo Monterrey", hora: "5:32", lat: -16.3920, lng: -71.5320 },
+                        { nombre: "Óvalo Cementerio La Apacheta", hora: "5:35", lat: -16.3970, lng: -71.5370 },
+                        { nombre: "Óvalo Avelino", hora: "5:37", lat: -16.4020, lng: -71.5420 },
+                        { nombre: "Avenida Los Incas con Alcides Carreón", hora: "5:40", lat: -16.4080, lng: -71.5480 },
+                        { nombre: "Laive", hora: "5:50", lat: -16.4150, lng: -71.5500 },
+                        { ...DESTINO_FINAL }
+                    ]
+                },
+                ruta6: {
+                    nombre: "Av. Perú c/n Av. Los Incas",
+                    paraderos: [
+                        { nombre: "Av. Perú c/n Av. Los Incas", hora: "5:35", lat: -16.4050, lng: -71.5450 },
+                        { nombre: "Romancero", hora: "5:40", lat: -16.4100, lng: -71.5480 },
+                        { nombre: "Laive", hora: "5:50", lat: -16.4150, lng: -71.5500 },
+                        { ...DESTINO_FINAL }
+                    ]
+                }
+            };
+
+            // ============================================================
+            //  ESTADO
+            // ============================================================
+            let rutaActual = "ruta1";
+            let paraderosActuales = [];
+            let alarmaActivada = true;
+            let vozActivada = true;
+            let vozGenero = 'mujer';
+            let ultimoAlertNombre = "";
+            let audioCtx = null;
+            let intervaloReloj = null;
+            let intervaloVerificacion = null;
+            let intervaloHora = null;
+            let synth = window.speechSynthesis;
+            let vozSeleccionada = null;
+            let gpsActivo = false;
+            let ubicacionActual = null;
+            let watchId = null;
+            let RADIO_DETECCION = 80;
+            let horaActualStr = "";
+
+            // DOM
+            const rutaSelect = document.getElementById('rutaSelect');
+            const container = document.getElementById('paraderoContainer');
+            const mensajeDiv = document.getElementById('mensajeAviso');
+            const footerReloj = document.getElementById('relojFooter');
+            const alarmaStatusSpan = document.getElementById('alarmaStatus');
+            const vozStatusSpan = document.getElementById('vozStatus');
+            const rutaNombreSpan = document.getElementById('rutaNombre');
+            const gpsDot = document.getElementById('gpsDot');
+            const gpsTexto = document.getElementById('gpsTexto');
+            const gpsPrecision = document.getElementById('gpsPrecision');
+            const horaActualDisplay = document.getElementById('horaActualDisplay');
+            const reiniciarBtn = document.getElementById('reiniciarBtn');
+            const silenciarBtn = document.getElementById('silenciarBtn');
+            const vozBtn = document.getElementById('vozBtn');
+            const gpsBtn = document.getElementById('gpsBtn');
+            const vozMujerBtn = document.getElementById('vozMujerBtn');
+            const vozHombreBtn = document.getElementById('vozHombreBtn');
+            const vozAutoBtn = document.getElementById('vozAutoBtn');
+            const vozNombreMostrar = document.getElementById('vozNombreMostrar');
+
+            // ============================================================
+            //  FUNCIONES DE DIFERENCIA HORARIA
+            // ============================================================
+            function calcularDiferenciaHoraria(horaParadero) {
+                const ahora = new Date();
+                const minsAhora = ahora.getHours() * 60 + ahora.getMinutes();
+                const minsParadero = horaAMinutos(horaParadero);
+                return minsAhora - minsParadero;
+            }
+
+            function formatearDiferencia(diff) {
+                if (diff === 0) return { texto: "⏱️ 0 min", clase: "exacto" };
+                const absDiff = Math.abs(diff);
+                const signo = diff > 0 ? "+" : "-";
+                const clase = diff > 0 ? "atrasado" : "adelantado";
+                return { texto: `${signo}${absDiff} min`, clase: clase };
+            }
+
+            // ============================================================
+            //  FUNCIONES GPS
+            // ============================================================
+            function calcularDistancia(lat1, lon1, lat2, lon2) {
+                const R = 6371000;
+                const dLat = (lat2 - lat1) * Math.PI / 180;
+                const dLon = (lon2 - lon1) * Math.PI / 180;
+                const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                          Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                          Math.sin(dLon/2) * Math.sin(dLon/2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                return R * c;
+            }
+
+            function iniciarGPS() {
+                if (!navigator.geolocation) {
+                    gpsTexto.textContent = '❌ GPS no soportado';
+                    gpsDot.className = 'dot-gps error';
+                    return;
+                }
+
+                gpsBtn.textContent = '⏳ GPS...';
+                gpsBtn.disabled = true;
+
+                watchId = navigator.geolocation.watchPosition(
+                    function(pos) {
+                        gpsActivo = true;
+                        ubicacionActual = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                        const precision = pos.coords.accuracy;
+                        gpsDot.className = 'dot-gps activo';
+                        gpsTexto.textContent = `📍 ${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)}`;
+                        gpsPrecision.textContent = `±${Math.round(precision)}m`;
+                        gpsBtn.textContent = '📍 GPS ON';
+                        gpsBtn.disabled = false;
+                        gpsBtn.style.background = '#0d3a3a';
+                        gpsBtn.style.borderColor = '#2a6a5a';
+
+                        verificarProximidadGPS();
+                        verificarHorarios();
+                    },
+                    function(err) {
+                        gpsActivo = false;
+                        gpsDot.className = 'dot-gps error';
+                        gpsTexto.textContent = `❌ Error: ${err.message}`;
+                        gpsPrecision.textContent = '';
+                        gpsBtn.textContent = '📍 GPS OFF';
+                        gpsBtn.disabled = false;
+                        gpsBtn.style.background = '#2a2a3a';
+                        gpsBtn.style.borderColor = 'rgba(255,255,255,0.04)';
+                    },
+                    { enableHighAccuracy: true, timeout: 15000, maximumAge: 5000 }
+                );
+            }
+
+            function detenerGPS() {
+                if (watchId) { navigator.geolocation.clearWatch(watchId); watchId = null; }
+                gpsActivo = false;
+                ubicacionActual = null;
+                gpsDot.className = 'dot-gps inactivo';
+                gpsTexto.textContent = '📍 GPS detenido';
+                gpsPrecision.textContent = '';
+                gpsBtn.textContent = '📍 GPS OFF';
+                gpsBtn.style.background = '#2a2a3a';
+                gpsBtn.style.borderColor = 'rgba(255,255,255,0.04)';
+                for (let p of paraderosActuales) { p.cercano = false; }
+                renderizarParaderos();
+            }
+
+            function toggleGPS() {
+                if (gpsActivo) { detenerGPS(); } else { iniciarGPS(); }
+            }
+
+            function verificarProximidadGPS() {
+                if (!ubicacionActual || !paraderosActuales) return;
+                let paraderoCercano = null;
+                let distanciaMinima = Infinity;
+
+                for (let p of paraderosActuales) {
+                    if (p.estado === 'pasado') { p.cercano = false; continue; }
+                    if (p.lat && p.lng) {
+                        const dist = calcularDistancia(ubicacionActual.lat, ubicacionActual.lng, p.lat, p.lng);
+                        p.distancia = Math.round(dist);
+                        p.cercano = dist < RADIO_DETECCION;
+                        if (p.cercano && p.estado !== 'pasado' && dist < distanciaMinima) {
+                            distanciaMinima = dist;
+                            paraderoCercano = p;
+                        }
+                    }
+                }
+
+                if (paraderoCercano && paraderoCercano.estado === 'pendiente') {
+                    paraderoCercano.estado = 'alert';
+                    ultimoAlertNombre = paraderoCercano.nombre;
+                    tocarAlarmaLarga();
+                    const mensajeVoz = `Llegada a ${paraderoCercano.nombre} por GPS`;
+                    hablar(mensajeVoz);
+                    setTimeout(() => { if (alarmaActivada) tocarBip(600, 0.2, 0.2); }, 1500);
+                    setTimeout(() => { ultimoAlertNombre = ""; }, 4000);
+                    renderizarParaderos();
+                    actualizarMensaje();
+                }
+                renderizarParaderos();
+            }
+
+            // ============================================================
+            //  VOCES
+            // ============================================================
+            function cargarVoces() {
+                if (!synth) return;
+                const voces = synth.getVoices();
+                const vocesES = voces.filter(v => v.lang.startsWith('es'));
+                if (vocesES.length === 0) { vozNombreMostrar.textContent = 'Voz: No disponible'; return; }
+
+                const femeninas = vocesES.filter(v => v.name.toLowerCase().includes('mexico') || v.name.toLowerCase().includes('mex') || v.name.toLowerCase().includes('latino') || v.name.toLowerCase().includes('samantha') || v.name.toLowerCase().includes('monica') || v.name.toLowerCase().includes('maria') || v.name.toLowerCase().includes('paulina') || v.name.toLowerCase().includes('female'));
+                const masculinas = vocesES.filter(v => v.name.toLowerCase().includes('david') || v.name.toLowerCase().includes('juan') || v.name.toLowerCase().includes('carlos') || v.name.toLowerCase().includes('jorge') || v.name.toLowerCase().includes('male'));
+                const latinas = vocesES.filter(v => v.lang.includes('es-MX') || v.lang.includes('es-AR') || v.lang.includes('es-CO') || v.lang.includes('es-CL') || v.lang.includes('es-PE'));
+
+                let vocesFiltradas = [];
+                if (vozGenero === 'mujer') { vocesFiltradas = femeninas.length > 0 ? femeninas : latinas; if (vocesFiltradas.length === 0) vocesFiltradas = vocesES; }
+                else if (vozGenero === 'hombre') { vocesFiltradas = masculinas.length > 0 ? masculinas : latinas; if (vocesFiltradas.length === 0) vocesFiltradas = vocesES; }
+                else { vocesFiltradas = femeninas.filter(v => v.lang.includes('es-MX') || v.lang.includes('es-AR')); if (vocesFiltradas.length === 0) vocesFiltradas = femeninas; if (vocesFiltradas.length === 0) vocesFiltradas = latinas; if (vocesFiltradas.length === 0) vocesFiltradas = vocesES; }
+
+                vozSeleccionada = vocesFiltradas[0] || vocesES[0] || null;
+                if (vozSeleccionada) {
+                    let nombre = vozSeleccionada.name;
+                    let pais = vozSeleccionada.lang.split('-')[1] || '';
+                    vozNombreMostrar.textContent = `Voz: ${nombre} ${pais ? '('+pais+')' : ''}`;
+                } else { vozNombreMostrar.textContent = 'Voz: No disponible'; }
+
+                [vozMujerBtn, vozHombreBtn, vozAutoBtn].forEach(b => b.classList.remove('activa-mujer', 'activa-hombre', 'activa-auto'));
+                if (vozGenero === 'mujer') vozMujerBtn.classList.add('activa-mujer');
+                else if (vozGenero === 'hombre') vozHombreBtn.classList.add('activa-hombre');
+                else vozAutoBtn.classList.add('activa-auto');
+                actualizarIndicadorVoz();
+            }
+
+            function actualizarIndicadorVoz() {
+                vozStatusSpan.className = 'voz-indicador';
+                if (vozActivada) {
+                    vozStatusSpan.classList.add('on');
+                    if (vozGenero === 'mujer') { vozStatusSpan.classList.add('mujer'); vozStatusSpan.textContent = '👩 Voz'; }
+                    else if (vozGenero === 'hombre') { vozStatusSpan.classList.add('hombre'); vozStatusSpan.textContent = '👨 Voz'; }
+                    else { vozStatusSpan.textContent = '🤖 Voz'; }
+                } else { vozStatusSpan.classList.add('off'); vozStatusSpan.textContent = '🔇 Voz OFF'; }
+            }
+
+            function hablar(texto) {
+                if (!vozActivada || !synth) return;
+                synth.cancel();
+                const utterance = new SpeechSynthesisUtterance(texto);
+                utterance.lang = 'es-ES';
+                utterance.rate = 0.9;
+                utterance.pitch = 1.0;
+                if (vozSeleccionada) utterance.voice = vozSeleccionada;
+                synth.speak(utterance);
+            }
+
+            if (synth) {
+                synth.onvoiceschanged = () => { setTimeout(cargarVoces, 200); };
+                setTimeout(cargarVoces, 300);
+                setTimeout(cargarVoces, 1000);
+            }
+
+            // ============================================================
+            //  AUDIO (BIP)
+            // ============================================================
+            function initAudio() {
+                if (!audioCtx) {
+                    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {}
+                }
+                if (audioCtx && audioCtx.state === 'suspended') { audioCtx.resume().catch(() => {}); }
+                return audioCtx;
+            }
+
+            function tocarBip(frecuencia = 800, duracion = 0.25, volumen = 0.15) {
+                if (!alarmaActivada) return;
+                const ctx = initAudio();
+                if (!ctx) return;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.value = frecuencia;
+                gain.gain.setValueAtTime(volumen, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duracion);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + duracion);
+            }
+
+            function tocarAlarmaLarga() {
+                if (!alarmaActivada) return;
+                tocarBip(880, 0.2, 0.25);
+                setTimeout(() => tocarBip(980, 0.2, 0.25), 250);
+                setTimeout(() => tocarBip(780, 0.25, 0.25), 500);
+                setTimeout(() => tocarBip(880, 0.2, 0.2), 750);
+            }
+
+            // ============================================================
+            //  FUNCIONES PRINCIPALES
+            // ============================================================
+            function obtenerHoraActual() {
+                const ahora = new Date();
+                return String(ahora.getHours()).padStart(2, '0') + ':' + String(ahora.getMinutes()).padStart(2, '0');
+            }
+
+            function horaAMinutos(horaStr) {
+                const partes = horaStr.split(':');
+                return parseInt(partes[0], 10) * 60 + parseInt(partes[1], 10);
+            }
+
+            function minutosActuales() {
+                const ahora = new Date();
+                return ahora.getHours() * 60 + ahora.getMinutes();
+            }
+
+            function cargarRuta(claveRuta) {
+                const data = rutasData[claveRuta];
+                if (!data) return;
+                paraderosActuales = data.paraderos.map((p, index) => ({
+                    nombre: p.nombre,
+                    hora: p.hora,
+                    lat: p.lat || null,
+                    lng: p.lng || null,
+                    estado: 'pendiente',
+                    cercano: false,
+                    distancia: null,
+                    diferencia: 0,
+                    horaDeEstar: false,
+                    esDestino: index === data.paraderos.length - 1
+                }));
+                rutaNombreSpan.textContent = data.nombre;
+                paraderosActuales.sort((a, b) => horaAMinutos(a.hora) - horaAMinutos(b.hora));
+                ultimoAlertNombre = "";
+                verificarHorarios();
+                renderizarParaderos();
+                actualizarMensaje();
+            }
+
+            function renderizarParaderos() {
+                let html = '';
+                for (let p of paraderosActuales) {
+                    let claseCard = 'paradero-card';
+                    let dotClase = 'dot';
+                    let estadoTexto = '';
+                    let distanciaHtml = '';
+                    let diferenciaHtml = '';
+                    let badgeHtml = '';
+
+                    const diff = calcularDiferenciaHoraria(p.hora);
+                    p.diferencia = diff;
+                    const diffInfo = formatearDiferencia(diff);
+
+                    // Badge de destino
+                    if (p.esDestino) {
+                        badgeHtml = `<span class="badge-destino">🏔️ Destino</span>`;
+                        claseCard += ' destino';
+                    }
+
+                    if (p.estado === 'alert') {
+                        claseCard += ' alert';
+                        dotClase += ' naranja';
+                        estadoTexto = '⏰ ¡Ahora!';
+                    } else if (p.estado === 'pasado') {
+                        claseCard += ' passed';
+                        dotClase += ' gris';
+                        estadoTexto = '✅ Pasado';
+                    } else if (p.cercano) {
+                        claseCard += ' cercano';
+                        dotClase += ' azul';
+                        estadoTexto = '📍 Cerca';
+                    } else if (p.estado === 'pendiente' && p.horaDeEstar) {
+                        claseCard += ' parpadeo-azul';
+                        dotClase += ' azul';
+                        estadoTexto = '🔵 ¡Debes estar aquí!';
+                    } else if (p.estado === 'pendiente') {
+                        if (diff < -2) { claseCard += ' adelantado'; estadoTexto = '⏳ Pendiente'; }
+                        else if (diff > 2) { claseCard += ' atrasado'; estadoTexto = '⏳ Pendiente'; }
+                        else { estadoTexto = '⏳ Pendiente'; }
+                        dotClase += ' verde';
+                    }
+
+                    if (p.estado === 'pendiente' || p.estado === 'alert') {
+                        diferenciaHtml = `<span class="diferencia ${diffInfo.clase}">${diffInfo.texto}</span>`;
+                    }
+
+                    if (p.distancia !== null && p.distancia !== undefined) {
+                        distanciaHtml = `<span class="distancia">${p.distancia}m</span>`;
+                    }
+
+                    html += `
+                        <div class="${claseCard}">
+                            <div class="paradero-info">
+                                <span class="paradero-nombre ${p.esDestino ? 'destino-label' : ''}">${p.nombre}</span>
+                                ${badgeHtml}
+                                <span class="horario-llegada">⏱️ ${p.hora}</span>
+                                ${distanciaHtml}
+                                ${diferenciaHtml}
+                            </div>
+                            <div class="estado-badge">
+                                <span class="${dotClase}"></span> ${estadoTexto}
+                            </div>
+                        </div>
+                    `;
+                }
+                container.innerHTML = html;
+            }
+
+            function verificarHorarios() {
+                const minutosAhora = minutosActuales();
+                let hayAlert = false;
+                let nuevoAlertNombre = "";
+
+                for (let p of paraderosActuales) {
+                    if (p.estado === 'pasado') continue;
+                    const minsP = horaAMinutos(p.hora);
+                    const diff = minutosAhora - minsP;
+                    p.horaDeEstar = (diff >= 0 && diff < 2 && p.estado !== 'pasado' && p.estado !== 'alert');
+
+                    if (minsP <= minutosAhora) {
+                        if (p.estado === 'pendiente') {
+                            p.estado = 'alert';
+                            hayAlert = true;
+                            nuevoAlertNombre = p.nombre;
+                        } else if (p.estado === 'alert') {
+                            if (diff >= 2) { p.estado = 'pasado'; p.horaDeEstar = false; }
+                            else { hayAlert = true; nuevoAlertNombre = p.nombre; }
+                        }
+                    } else {
+                        if (p.estado === 'alert') { p.estado = 'pendiente'; p.horaDeEstar = false; }
+                    }
+                }
+
+                for (let p of paraderosActuales) {
+                    const minsP = horaAMinutos(p.hora);
+                    const diff = minutosAhora - minsP;
+                    if (minsP <= minutosAhora && p.estado === 'pendiente') {
+                        if (diff < 2) { p.estado = 'alert'; p.horaDeEstar = false; hayAlert = true; nuevoAlertNombre = p.nombre; }
+                        else { p.horaDeEstar = true; }
+                    } else if (minsP <= minutosAhora && p.estado === 'alert') {
+                        if (diff >= 2) { p.estado = 'pasado'; p.horaDeEstar = false; }
+                        else { hayAlert = true; nuevoAlertNombre = p.nombre; }
+                    } else if (minsP > minutosAhora) {
+                        if (p.estado === 'alert') { p.estado = 'pendiente'; p.horaDeEstar = false; }
+                    }
+                }
+
+                if (hayAlert && nuevoAlertNombre && nuevoAlertNombre !== ultimoAlertNombre) {
+                    ultimoAlertNombre = nuevoAlertNombre;
+                    tocarAlarmaLarga();
+                    const mensajeVoz = `Llegada a ${nuevoAlertNombre}`;
+                    hablar(mensajeVoz);
+                    setTimeout(() => { if (alarmaActivada) tocarBip(600, 0.2, 0.2); }, 1500);
+                    setTimeout(() => { ultimoAlertNombre = ""; }, 4000);
+                }
+                if (!hayAlert) { ultimoAlertNombre = ""; }
+
+                horaActualStr = obtenerHoraActual();
+                horaActualDisplay.textContent = `🕐 ${horaActualStr}`;
+                renderizarParaderos();
+                actualizarMensaje();
+                footerReloj.textContent = `⏱️ ${horaActualStr}`;
+            }
+
+            function actualizarMensaje() {
+                const alerta = paraderosActuales.find(p => p.estado === 'alert');
+                const horaDeEstar = paraderosActuales.find(p => p.horaDeEstar && p.estado !== 'pasado' && p.estado !== 'alert');
+                const cercano = paraderosActuales.find(p => p.cercano && p.estado !== 'pasado');
+                const proximo = paraderosActuales.find(p => p.estado === 'pendiente' && !p.cercano && !p.horaDeEstar);
+
+                let diffMsg = '';
+                if (proximo) {
+                    const diff = calcularDiferenciaHoraria(proximo.hora);
+                    if (diff < -2) { diffMsg = ` 🟢 ${Math.abs(diff)} min antes`; }
+                    else if (diff > 2) { diffMsg = ` 🔴 +${diff} min tarde`; }
+                    else { diffMsg = ' ⏱️ En horario'; }
+                }
+
+                if (alerta) {
+                    mensajeDiv.innerHTML = `
+                        <span>🔔</span> 🚨 ¡Llegada a <strong>${alerta.nombre}</strong>! (${alerta.hora})
+                        <span style="background:rgba(255,255,255,0.06);padding:2px 12px;border-radius:40px;border:1px solid rgba(255,255,255,0.08);">¡Ahora!</span>
+                    `;
+                } else if (horaDeEstar) {
+                    mensajeDiv.innerHTML = `
+                        <span>🔵</span> ¡<strong>${horaDeEstar.nombre}</strong>! Ya deberías estar allí (${horaDeEstar.hora})
+                        <span style="background:rgba(42,122,216,0.2);padding:2px 12px;border-radius:40px;border:1px solid rgba(42,122,216,0.3);">⏰ ¡Es hora!</span>
+                    `;
+                } else if (cercano) {
+                    mensajeDiv.innerHTML = `<span>📍</span> ¡Estás cerca de <strong>${cercano.nombre}</strong>! (${cercano.distancia}m)`;
+                } else if (proximo) {
+                    mensajeDiv.innerHTML = `
+                        <span>⏳</span> Próximo: <strong>${proximo.nombre}</strong> a las ${proximo.hora}
+                        <span style="background:rgba(255,255,255,0.04);padding:2px 10px;border-radius:40px;font-size:0.7rem;border:1px solid rgba(255,255,255,0.04);">${diffMsg}</span>
+                    `;
+                } else {
+                    const todosPasados = paraderosActuales.every(p => p.estado === 'pasado');
+                    mensajeDiv.innerHTML = todosPasados && paraderosActuales.length > 0
+                        ? `<span>✅</span> ¡Llegaste a <strong>Campamento IMCO - Cerro Verde</strong>! 🏔️`
+                        : `<span>⏳</span> Esperando siguiente llegada...`;
+                }
+
+                alarmaStatusSpan.textContent = alarmaActivada ? '🔊 Alarma' : '🔇 Silenciada';
+                alarmaStatusSpan.style.background = alarmaActivada ? '#1a2a3a' : '#1a1a26';
+                actualizarIndicadorVoz();
+            }
+
+            // ============================================================
+            //  CONTROLES
+            // ============================================================
+            function reiniciarRuta() { detenerGPS(); cargarRuta(rutaSelect.value); verificarHorarios(); renderizarParaderos(); actualizarMensaje(); footerReloj.textContent = `⏱️ ${obtenerHoraActual()}`; ultimoAlertNombre = ""; if (synth) synth.cancel(); }
+            function cambiarRuta() { detenerGPS(); rutaActual = rutaSelect.value; cargarRuta(rutaActual); verificarHorarios(); renderizarParaderos(); actualizarMensaje(); footerReloj.textContent = `⏱️ ${obtenerHoraActual()}`; ultimoAlertNombre = ""; if (synth) synth.cancel(); }
+            function toggleSilenciar() { alarmaActivada = !alarmaActivada; if (alarmaActivada) tocarBip(800, 0.15, 0.15); actualizarMensaje(); silenciarBtn.textContent = alarmaActivada ? '🔇 Silenciar' : '🔊 Activar'; }
+            function toggleVoz() { vozActivada = !vozActivada; if (vozActivada) { setTimeout(() => hablar("Voz activada"), 300); } else { if (synth) synth.cancel(); } actualizarMensaje(); vozBtn.textContent = vozActivada ? '🔊 Voz ON' : '🔇 Voz OFF'; }
+            function setVozGenero(genero) { vozGenero = genero; cargarVoces(); if (vozActivada) { setTimeout(() => hablar("Voz seleccionada"), 400); } }
+
+            // ============================================================
+            //  INICIALIZACIÓN
+            // ============================================================
+            function llenarSelectRutas() {
+                rutaSelect.innerHTML = '';
+                for (const [clave, data] of Object.entries(rutasData)) {
+                    const option = document.createElement('option');
+                    option.value = clave;
+                    option.textContent = data.nombre;
+                    rutaSelect.appendChild(option);
+                }
+                rutaSelect.value = 'ruta1';
+            }
+
+            function iniciarIntervalos() {
+                if (intervaloReloj) clearInterval(intervaloReloj);
+                if (intervaloVerificacion) clearInterval(intervaloVerificacion);
+                if (intervaloHora) clearInterval(intervaloHora);
+
+                intervaloReloj = setInterval(() => { footerReloj.textContent = `⏱️ ${obtenerHoraActual()}`; }, 10000);
+                intervaloVerificacion = setInterval(() => { verificarHorarios(); if (gpsActivo && ubicacionActual) { verificarProximidadGPS(); } }, 5000);
+                intervaloHora = setInterval(() => { horaActualStr = obtenerHoraActual(); horaActualDisplay.textContent = `🕐 ${horaActualStr}`; }, 1000);
+            }
+
+            // EVENTOS
+            rutaSelect.addEventListener('change', cambiarRuta);
+            reiniciarBtn.addEventListener('click', reiniciarRuta);
+            silenciarBtn.addEventListener('click', toggleSilenciar);
+            vozBtn.addEventListener('click', toggleVoz);
+            gpsBtn.addEventListener('click', toggleGPS);
+            vozMujerBtn.addEventListener('click', () => setVozGenero('mujer'));
+            vozHombreBtn.addEventListener('click', () => setVozGenero('hombre'));
+            vozAutoBtn.addEventListener('click', () => setVozGenero('auto'));
+
+            // INICIO
+            function init() {
+                llenarSelectRutas();
+                rutaActual = 'ruta1';
+                rutaSelect.value = 'ruta1';
+                cargarRuta('ruta1');
+                verificarHorarios();
+                renderizarParaderos();
+                actualizarMensaje();
+                iniciarIntervalos();
+                footerReloj.textContent = `⏱️ ${obtenerHoraActual()}`;
+
+                document.addEventListener('touchstart', () => { initAudio(); }, { once: true });
+                document.addEventListener('click', () => { initAudio(); }, { once: true });
+            }
+
+            init();
+
+            window.addEventListener('beforeunload', () => {
+                if (intervaloReloj) clearInterval(intervaloReloj);
+                if (intervaloVerificacion) clearInterval(intervaloVerificacion);
+                if (intervaloHora) clearInterval(intervaloHora);
+                if (watchId) navigator.geolocation.clearWatch(watchId);
+                if (audioCtx) audioCtx.close();
+                if (synth) synth.cancel();
+            });
+
+        })();
+    </script>
+</body>
+</html>
