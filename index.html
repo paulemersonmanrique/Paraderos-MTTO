@@ -408,7 +408,7 @@
 <body>
     <div class="app-container">
         <h1>
-            🏔️ Paraderos
+            Paraderos
             <span id="rutaNombre">Ruta 1</span>
         </h1>
 
@@ -421,22 +421,22 @@
 
         <div class="route-selector">
             <label>
-                🗺️ Ruta
+                Ruta
                 <select id="rutaSelect"></select>
             </label>
             <div class="btn-group">
-                <button class="btn-primary" id="reiniciarBtn">🔄 Reiniciar</button>
-                <button class="btn-primary btn-silenciar" id="silenciarBtn">🔇 Silenciar</button>
-                <button class="btn-primary btn-voz" id="vozBtn">🔊 Voz ON</button>
-                <button class="btn-primary btn-gps" id="gpsBtn">📍 GPS</button>
+                <button class="btn-primary" id="reiniciarBtn">Reiniciar</button>
+                <button class="btn-primary btn-silenciar" id="silenciarBtn">Silenciar</button>
+                <button class="btn-primary btn-voz" id="vozBtn">Voz ON</button>
+                <button class="btn-primary btn-gps" id="gpsBtn">GPS</button>
             </div>
         </div>
 
         <div class="voz-selector-movil">
-            <span class="label">🗣️ Voz:</span>
-            <button class="voz-btn activa-mujer" id="vozMujerBtn">👩 Femenina</button>
-            <button class="voz-btn" id="vozHombreBtn">👨 Masculina</button>
-            <button class="voz-btn" id="vozAutoBtn">🤖 Auto</button>
+            <span class="label">Voz:</span>
+            <button class="voz-btn activa-mujer" id="vozMujerBtn">Femenina</button>
+            <button class="voz-btn" id="vozHombreBtn">Masculina</button>
+            <button class="voz-btn" id="vozAutoBtn">Auto</button>
         </div>
         <div class="voz-nombre" id="vozNombreMostrar">Voz: Cargando...</div>
 
@@ -447,9 +447,9 @@
         </div>
 
         <div class="footer-time">
-            <span id="relojFooter">⏱️ Actualizado</span>
-            <span class="alarma-status" id="alarmaStatus">🔊 Alarma</span>
-            <span class="voz-indicador on" id="vozStatus">🗣️ ON</span>
+            <span id="relojFooter">Actualizado</span>
+            <span class="alarma-status" id="alarmaStatus">Alarma</span>
+            <span class="voz-indicador on" id="vozStatus">ON</span>
         </div>
     </div>
 
@@ -459,10 +459,9 @@
 
             // ============================================================
             //  RUTAS CON CAMPAMENTO IMCO - CERRO VERDE A LAS 7:00 AM
-            //  Coordenadas de ejemplo para Cerro Verde
             // ============================================================
             const DESTINO_FINAL = {
-                nombre: "🏔️ Campamento IMCO - Cerro Verde",
+                nombre: "Campamento IMCO - Cerro Verde",
                 hora: "7:00",
                 lat: -16.5400,
                 lng: -71.5900
@@ -598,7 +597,7 @@
             }
 
             function formatearDiferencia(diff) {
-                if (diff === 0) return { texto: "⏱️ 0 min", clase: "exacto" };
+                if (diff === 0) return { texto: "0 min", clase: "exacto" };
                 const absDiff = Math.abs(diff);
                 const signo = diff > 0 ? "+" : "-";
                 const clase = diff > 0 ? "atrasado" : "adelantado";
@@ -621,12 +620,12 @@
 
             function iniciarGPS() {
                 if (!navigator.geolocation) {
-                    gpsTexto.textContent = '❌ GPS no soportado';
+                    gpsTexto.textContent = 'GPS no soportado';
                     gpsDot.className = 'dot-gps error';
                     return;
                 }
 
-                gpsBtn.textContent = '⏳ GPS...';
+                gpsBtn.textContent = 'GPS...';
                 gpsBtn.disabled = true;
 
                 watchId = navigator.geolocation.watchPosition(
@@ -635,9 +634,9 @@
                         ubicacionActual = { lat: pos.coords.latitude, lng: pos.coords.longitude };
                         const precision = pos.coords.accuracy;
                         gpsDot.className = 'dot-gps activo';
-                        gpsTexto.textContent = `📍 ${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)}`;
+                        gpsTexto.textContent = `${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)}`;
                         gpsPrecision.textContent = `±${Math.round(precision)}m`;
-                        gpsBtn.textContent = '📍 GPS ON';
+                        gpsBtn.textContent = 'GPS ON';
                         gpsBtn.disabled = false;
                         gpsBtn.style.background = '#0d3a3a';
                         gpsBtn.style.borderColor = '#2a6a5a';
@@ -648,9 +647,9 @@
                     function(err) {
                         gpsActivo = false;
                         gpsDot.className = 'dot-gps error';
-                        gpsTexto.textContent = `❌ Error: ${err.message}`;
+                        gpsTexto.textContent = `Error: ${err.message}`;
                         gpsPrecision.textContent = '';
-                        gpsBtn.textContent = '📍 GPS OFF';
+                        gpsBtn.textContent = 'GPS OFF';
                         gpsBtn.disabled = false;
                         gpsBtn.style.background = '#2a2a3a';
                         gpsBtn.style.borderColor = 'rgba(255,255,255,0.04)';
@@ -664,9 +663,9 @@
                 gpsActivo = false;
                 ubicacionActual = null;
                 gpsDot.className = 'dot-gps inactivo';
-                gpsTexto.textContent = '📍 GPS detenido';
+                gpsTexto.textContent = 'GPS detenido';
                 gpsPrecision.textContent = '';
-                gpsBtn.textContent = '📍 GPS OFF';
+                gpsBtn.textContent = 'GPS OFF';
                 gpsBtn.style.background = '#2a2a3a';
                 gpsBtn.style.borderColor = 'rgba(255,255,255,0.04)';
                 for (let p of paraderosActuales) { p.cercano = false; }
@@ -745,10 +744,10 @@
                 vozStatusSpan.className = 'voz-indicador';
                 if (vozActivada) {
                     vozStatusSpan.classList.add('on');
-                    if (vozGenero === 'mujer') { vozStatusSpan.classList.add('mujer'); vozStatusSpan.textContent = '👩 Voz'; }
-                    else if (vozGenero === 'hombre') { vozStatusSpan.classList.add('hombre'); vozStatusSpan.textContent = '👨 Voz'; }
-                    else { vozStatusSpan.textContent = '🤖 Voz'; }
-                } else { vozStatusSpan.classList.add('off'); vozStatusSpan.textContent = '🔇 Voz OFF'; }
+                    if (vozGenero === 'mujer') { vozStatusSpan.classList.add('mujer'); vozStatusSpan.textContent = 'Voz'; }
+                    else if (vozGenero === 'hombre') { vozStatusSpan.classList.add('hombre'); vozStatusSpan.textContent = 'Voz'; }
+                    else { vozStatusSpan.textContent = 'Voz'; }
+                } else { vozStatusSpan.classList.add('off'); vozStatusSpan.textContent = 'OFF'; }
             }
 
             function hablar(texto) {
@@ -858,32 +857,31 @@
                     p.diferencia = diff;
                     const diffInfo = formatearDiferencia(diff);
 
-                    // Badge de destino
                     if (p.esDestino) {
-                        badgeHtml = `<span class="badge-destino">🏔️ Destino</span>`;
+                        badgeHtml = `<span class="badge-destino">Destino</span>`;
                         claseCard += ' destino';
                     }
 
                     if (p.estado === 'alert') {
                         claseCard += ' alert';
                         dotClase += ' naranja';
-                        estadoTexto = '⏰ ¡Ahora!';
+                        estadoTexto = '¡Ahora!';
                     } else if (p.estado === 'pasado') {
                         claseCard += ' passed';
                         dotClase += ' gris';
-                        estadoTexto = '✅ Pasado';
+                        estadoTexto = 'Pasado';
                     } else if (p.cercano) {
                         claseCard += ' cercano';
                         dotClase += ' azul';
-                        estadoTexto = '📍 Cerca';
+                        estadoTexto = 'Cerca';
                     } else if (p.estado === 'pendiente' && p.horaDeEstar) {
                         claseCard += ' parpadeo-azul';
                         dotClase += ' azul';
-                        estadoTexto = '🔵 ¡Debes estar aquí!';
+                        estadoTexto = 'Debes estar aquí!';
                     } else if (p.estado === 'pendiente') {
-                        if (diff < -2) { claseCard += ' adelantado'; estadoTexto = '⏳ Pendiente'; }
-                        else if (diff > 2) { claseCard += ' atrasado'; estadoTexto = '⏳ Pendiente'; }
-                        else { estadoTexto = '⏳ Pendiente'; }
+                        if (diff < -2) { claseCard += ' adelantado'; estadoTexto = 'Pendiente'; }
+                        else if (diff > 2) { claseCard += ' atrasado'; estadoTexto = 'Pendiente'; }
+                        else { estadoTexto = 'Pendiente'; }
                         dotClase += ' verde';
                     }
 
@@ -900,7 +898,7 @@
                             <div class="paradero-info">
                                 <span class="paradero-nombre ${p.esDestino ? 'destino-label' : ''}">${p.nombre}</span>
                                 ${badgeHtml}
-                                <span class="horario-llegada">⏱️ ${p.hora}</span>
+                                <span class="horario-llegada">${p.hora}</span>
                                 ${distanciaHtml}
                                 ${diferenciaHtml}
                             </div>
@@ -963,10 +961,10 @@
                 if (!hayAlert) { ultimoAlertNombre = ""; }
 
                 horaActualStr = obtenerHoraActual();
-                horaActualDisplay.textContent = `🕐 ${horaActualStr}`;
+                horaActualDisplay.textContent = `${horaActualStr}`;
                 renderizarParaderos();
                 actualizarMensaje();
-                footerReloj.textContent = `⏱️ ${horaActualStr}`;
+                footerReloj.textContent = `${horaActualStr}`;
             }
 
             function actualizarMensaje() {
@@ -978,23 +976,23 @@
                 let diffMsg = '';
                 if (proximo) {
                     const diff = calcularDiferenciaHoraria(proximo.hora);
-                    if (diff < -2) { diffMsg = ` 🟢 ${Math.abs(diff)} min antes`; }
-                    else if (diff > 2) { diffMsg = ` 🔴 +${diff} min tarde`; }
-                    else { diffMsg = ' ⏱️ En horario'; }
+                    if (diff < -2) { diffMsg = ` ${Math.abs(diff)} min antes`; }
+                    else if (diff > 2) { diffMsg = ` +${diff} min tarde`; }
+                    else { diffMsg = ' En horario'; }
                 }
 
                 if (alerta) {
                     mensajeDiv.innerHTML = `
-                        <span>🔔</span> 🚨 ¡Llegada a <strong>${alerta.nombre}</strong>! (${alerta.hora})
-                        <span style="background:rgba(255,255,255,0.06);padding:2px 12px;border-radius:40px;border:1px solid rgba(255,255,255,0.08);">¡Ahora!</span>
+                        <span>🔔</span> Llegada a <strong>${alerta.nombre}</strong>! (${alerta.hora})
+                        <span style="background:rgba(255,255,255,0.06);padding:2px 12px;border-radius:40px;border:1px solid rgba(255,255,255,0.08);">Ahora!</span>
                     `;
                 } else if (horaDeEstar) {
                     mensajeDiv.innerHTML = `
-                        <span>🔵</span> ¡<strong>${horaDeEstar.nombre}</strong>! Ya deberías estar allí (${horaDeEstar.hora})
-                        <span style="background:rgba(42,122,216,0.2);padding:2px 12px;border-radius:40px;border:1px solid rgba(42,122,216,0.3);">⏰ ¡Es hora!</span>
+                        <span>🔵</span> <strong>${horaDeEstar.nombre}</strong>! Ya deberías estar allí (${horaDeEstar.hora})
+                        <span style="background:rgba(42,122,216,0.2);padding:2px 12px;border-radius:40px;border:1px solid rgba(42,122,216,0.3);">Es hora!</span>
                     `;
                 } else if (cercano) {
-                    mensajeDiv.innerHTML = `<span>📍</span> ¡Estás cerca de <strong>${cercano.nombre}</strong>! (${cercano.distancia}m)`;
+                    mensajeDiv.innerHTML = `<span>📍</span> Estás cerca de <strong>${cercano.nombre}</strong>! (${cercano.distancia}m)`;
                 } else if (proximo) {
                     mensajeDiv.innerHTML = `
                         <span>⏳</span> Próximo: <strong>${proximo.nombre}</strong> a las ${proximo.hora}
@@ -1003,11 +1001,11 @@
                 } else {
                     const todosPasados = paraderosActuales.every(p => p.estado === 'pasado');
                     mensajeDiv.innerHTML = todosPasados && paraderosActuales.length > 0
-                        ? `<span>✅</span> ¡Llegaste a <strong>Campamento IMCO - Cerro Verde</strong>! 🏔️`
+                        ? `<span>✅</span> Llegaste a <strong>Campamento IMCO - Cerro Verde</strong>!`
                         : `<span>⏳</span> Esperando siguiente llegada...`;
                 }
 
-                alarmaStatusSpan.textContent = alarmaActivada ? '🔊 Alarma' : '🔇 Silenciada';
+                alarmaStatusSpan.textContent = alarmaActivada ? 'Alarma' : 'Silenciada';
                 alarmaStatusSpan.style.background = alarmaActivada ? '#1a2a3a' : '#1a1a26';
                 actualizarIndicadorVoz();
             }
@@ -1015,10 +1013,10 @@
             // ============================================================
             //  CONTROLES
             // ============================================================
-            function reiniciarRuta() { detenerGPS(); cargarRuta(rutaSelect.value); verificarHorarios(); renderizarParaderos(); actualizarMensaje(); footerReloj.textContent = `⏱️ ${obtenerHoraActual()}`; ultimoAlertNombre = ""; if (synth) synth.cancel(); }
-            function cambiarRuta() { detenerGPS(); rutaActual = rutaSelect.value; cargarRuta(rutaActual); verificarHorarios(); renderizarParaderos(); actualizarMensaje(); footerReloj.textContent = `⏱️ ${obtenerHoraActual()}`; ultimoAlertNombre = ""; if (synth) synth.cancel(); }
-            function toggleSilenciar() { alarmaActivada = !alarmaActivada; if (alarmaActivada) tocarBip(800, 0.15, 0.15); actualizarMensaje(); silenciarBtn.textContent = alarmaActivada ? '🔇 Silenciar' : '🔊 Activar'; }
-            function toggleVoz() { vozActivada = !vozActivada; if (vozActivada) { setTimeout(() => hablar("Voz activada"), 300); } else { if (synth) synth.cancel(); } actualizarMensaje(); vozBtn.textContent = vozActivada ? '🔊 Voz ON' : '🔇 Voz OFF'; }
+            function reiniciarRuta() { detenerGPS(); cargarRuta(rutaSelect.value); verificarHorarios(); renderizarParaderos(); actualizarMensaje(); footerReloj.textContent = `${obtenerHoraActual()}`; ultimoAlertNombre = ""; if (synth) synth.cancel(); }
+            function cambiarRuta() { detenerGPS(); rutaActual = rutaSelect.value; cargarRuta(rutaActual); verificarHorarios(); renderizarParaderos(); actualizarMensaje(); footerReloj.textContent = `${obtenerHoraActual()}`; ultimoAlertNombre = ""; if (synth) synth.cancel(); }
+            function toggleSilenciar() { alarmaActivada = !alarmaActivada; if (alarmaActivada) tocarBip(800, 0.15, 0.15); actualizarMensaje(); silenciarBtn.textContent = alarmaActivada ? 'Silenciar' : 'Activar'; }
+            function toggleVoz() { vozActivada = !vozActivada; if (vozActivada) { setTimeout(() => hablar("Voz activada"), 300); } else { if (synth) synth.cancel(); } actualizarMensaje(); vozBtn.textContent = vozActivada ? 'Voz ON' : 'Voz OFF'; }
             function setVozGenero(genero) { vozGenero = genero; cargarVoces(); if (vozActivada) { setTimeout(() => hablar("Voz seleccionada"), 400); } }
 
             // ============================================================
@@ -1040,9 +1038,9 @@
                 if (intervaloVerificacion) clearInterval(intervaloVerificacion);
                 if (intervaloHora) clearInterval(intervaloHora);
 
-                intervaloReloj = setInterval(() => { footerReloj.textContent = `⏱️ ${obtenerHoraActual()}`; }, 10000);
+                intervaloReloj = setInterval(() => { footerReloj.textContent = `${obtenerHoraActual()}`; }, 10000);
                 intervaloVerificacion = setInterval(() => { verificarHorarios(); if (gpsActivo && ubicacionActual) { verificarProximidadGPS(); } }, 5000);
-                intervaloHora = setInterval(() => { horaActualStr = obtenerHoraActual(); horaActualDisplay.textContent = `🕐 ${horaActualStr}`; }, 1000);
+                intervaloHora = setInterval(() => { horaActualStr = obtenerHoraActual(); horaActualDisplay.textContent = `${horaActualStr}`; }, 1000);
             }
 
             // EVENTOS
@@ -1065,7 +1063,7 @@
                 renderizarParaderos();
                 actualizarMensaje();
                 iniciarIntervalos();
-                footerReloj.textContent = `⏱️ ${obtenerHoraActual()}`;
+                footerReloj.textContent = `${obtenerHoraActual()}`;
 
                 document.addEventListener('touchstart', () => { initAudio(); }, { once: true });
                 document.addEventListener('click', () => { initAudio(); }, { once: true });
