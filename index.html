@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Paraderos · Rutas Reales GPS</title>
+    <title>Paraderos · Alerta y Referencia</title>
     <style>
         * {
             margin: 0;
@@ -32,7 +32,7 @@
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
         h1 {
-            font-size: 2rem !important;
+            font-size: 1.8rem !important;
             font-weight: 700;
             color: #ffffff !important;
             display: flex;
@@ -46,12 +46,11 @@
         h1 span {
             background: #1a5f7a;
             color: #ffffff !important;
-            font-size: 1rem !important;
+            font-size: 0.9rem !important;
             padding: 4px 14px;
             border-radius: 40px;
             font-weight: 600;
         }
-
         .gps-status {
             display: flex;
             align-items: center;
@@ -60,7 +59,7 @@
             padding: 10px 14px;
             border-radius: 28px;
             margin-bottom: 12px;
-            font-size: 1.3rem !important;
+            font-size: 1.1rem !important;
             font-weight: 600;
             color: #ffffff !important;
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
@@ -83,8 +82,7 @@
             100% { opacity: 0.4; transform: scale(0.8); box-shadow: 0 0 0 0 rgba(42, 157, 143, 0); }
         }
         .gps-status #gpsTexto { color: #ffffff !important; }
-        .gps-status #gpsPrecision { color: #a0b0c0 !important; font-size: 1.1rem !important; }
-        .gps-status #horaActualDisplay { color: #ffffff !important; font-size: 1.2rem !important; }
+        .gps-status #gpsPrecision { color: #a0b0c0 !important; font-size: 0.9rem !important; }
 
         .route-selector {
             background: #1a1a26;
@@ -101,7 +99,7 @@
         .route-selector label {
             font-weight: 600;
             color: #ffffff !important;
-            font-size: 1.2rem !important;
+            font-size: 1.1rem !important;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -115,7 +113,7 @@
             background: #0d0d15;
             font-weight: 600;
             color: #ffffff !important;
-            font-size: 1.2rem !important;
+            font-size: 1.1rem !important;
             outline: none;
             cursor: pointer;
             -webkit-appearance: none;
@@ -130,29 +128,6 @@
             color: #ffffff !important;
         }
 
-        .btn-guardar {
-            background: #1a5a3a;
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #ffffff !important;
-            font-weight: 700;
-            padding: 10px 16px;
-            border-radius: 40px;
-            font-size: 1.2rem !important;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-            flex: 1 1 auto;
-            min-width: 50px;
-            touch-action: manipulation;
-            text-align: center;
-        }
-        .btn-guardar:active { transform: scale(0.95); }
-        .btn-guardar:hover { background: #1f6a4a; border-color: rgba(255,255,255,0.15); }
-        .btn-guardar:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
         .menu-hamburguesa {
             position: relative;
             display: inline-block;
@@ -161,43 +136,39 @@
             background: #1a2a3a;
             border: 1px solid rgba(255,255,255,0.08);
             color: #ffffff !important;
-            font-size: 1.8rem !important;
-            padding: 4px 14px;
+            font-size: 1.6rem !important;
+            padding: 4px 12px;
             border-radius: 40px;
             cursor: pointer;
             transition: all 0.2s ease;
             line-height: 1;
         }
-        .menu-hamburguesa .menu-btn:hover {
-            background: #1f3a4a;
-        }
+        .menu-hamburguesa .menu-btn:hover { background: #1f3a4a; }
         .menu-hamburguesa .menu-contenido {
             display: none;
             position: absolute;
             right: 0;
             top: 100%;
             background: #1a1a26;
-            min-width: 200px;
+            min-width: 150px;
             border-radius: 20px;
-            padding: 10px 14px;
+            padding: 10px 12px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.6);
             border: 1px solid rgba(255,255,255,0.08);
             z-index: 1000;
             margin-top: 6px;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
         }
-        .menu-hamburguesa .menu-contenido.abierto {
-            display: flex;
-        }
+        .menu-hamburguesa .menu-contenido.abierto { display: flex; }
         .menu-hamburguesa .menu-contenido .btn-primary {
             background: #1a2a3a;
             border: 1px solid rgba(255,255,255,0.08);
             color: #ffffff !important;
             font-weight: 700;
-            padding: 8px 14px;
+            padding: 7px 12px;
             border-radius: 40px;
-            font-size: 1rem !important;
+            font-size: 0.9rem !important;
             cursor: pointer;
             transition: all 0.2s ease;
             width: 100%;
@@ -209,34 +180,9 @@
         .menu-hamburguesa .menu-contenido .btn-silenciar:hover { background: #3a3a4a; }
         .menu-hamburguesa .menu-contenido .btn-voz { background: #1a3a2a; }
         .menu-hamburguesa .menu-contenido .btn-voz:hover { background: #1f4a35; }
-        .menu-hamburguesa .menu-contenido .voz-selector {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            background: #0d0d15;
-            padding: 6px 10px;
-            border-radius: 30px;
-            border: 1px solid rgba(255,255,255,0.06);
-        }
-        .menu-hamburguesa .menu-contenido .voz-selector .voz-btn {
-            border: 1px solid rgba(255,255,255,0.08);
-            background: transparent;
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 0.85rem !important;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            color: #a0b0c0;
-            flex: 1;
-            text-align: center;
-        }
-        .menu-hamburguesa .menu-contenido .voz-selector .voz-btn.activa-mujer { background: #4a2a4a; border-color: #6a3a6a; color: #ffffff !important; }
-        .menu-hamburguesa .menu-contenido .voz-selector .voz-btn.activa-hombre { background: #1a2a4a; border-color: #2a4a6a; color: #ffffff !important; }
-        .menu-hamburguesa .menu-contenido .voz-selector .voz-btn.activa-auto { background: #1a3a2a; border-color: #2a5a3a; color: #ffffff !important; }
         .menu-hamburguesa .menu-contenido .separador {
             border-top: 1px solid rgba(255,255,255,0.06);
-            margin: 4px 0;
+            margin: 3px 0;
         }
 
         .paradero-grid {
@@ -263,19 +209,8 @@
             box-shadow: 0 1px 6px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.04);
             border-left: 5px solid #2a3a4a;
             flex-wrap: wrap;
-            gap: 4px;
+            gap: 3px;
             transition: all 0.3s ease;
-        }
-        .paradero-card.parpadeo-azul {
-            border-left-color: #2a7ad8;
-            background: #0d1820;
-            box-shadow: 0 0 25px rgba(42, 122, 216, 0.1), 0 0 0 1px rgba(42, 122, 216, 0.2);
-            animation: parpadeoAzul 1.2s ease-in-out infinite;
-        }
-        @keyframes parpadeoAzul {
-            0% { border-left-color: #2a7ad8; background: #0d1820; box-shadow: 0 0 15px rgba(42, 122, 216, 0.05), 0 0 0 1px rgba(42, 122, 216, 0.1); }
-            50% { border-left-color: #5a9eff; background: #0d2030; box-shadow: 0 0 40px rgba(42, 122, 216, 0.25), 0 0 0 2px rgba(42, 122, 216, 0.3); }
-            100% { border-left-color: #2a7ad8; background: #0d1820; box-shadow: 0 0 15px rgba(42, 122, 216, 0.05), 0 0 0 1px rgba(42, 122, 216, 0.1); }
         }
         .paradero-card.alert {
             border-left-color: #e07b2c;
@@ -293,90 +228,53 @@
             background: #0d1210;
             opacity: 0.5;
         }
-        .paradero-card.cercano {
-            border-left-color: #2a9d8f;
-            background: #0d1a18;
-            box-shadow: 0 4px 16px rgba(42, 157, 143, 0.08), 0 0 0 1px rgba(42, 157, 143, 0.15);
-        }
         .paradero-card.destino {
             border-left-color: #d4a02a;
             background: #1a180d;
             box-shadow: 0 0 25px rgba(212, 160, 42, 0.08), 0 0 0 1px rgba(212, 160, 42, 0.15);
         }
-        .paradero-card.destino.parpadeo-azul {
+        .paradero-card.proximo {
             border-left-color: #2a7ad8;
-            animation: parpadeoAzul 1.2s ease-in-out infinite;
-        }
-        .paradero-card .btn-guardar-mini {
-            background: #1a5a3a;
-            border: 1px solid rgba(255,255,255,0.08);
-            color: #ffffff !important;
-            font-weight: 700;
-            padding: 3px 12px;
-            border-radius: 30px;
-            font-size: 0.8rem !important;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            touch-action: manipulation;
-        }
-        .paradero-card .btn-guardar-mini:active { transform: scale(0.95); }
-        .paradero-card .btn-guardar-mini:hover { background: #1f6a4a; }
-        .paradero-card .btn-guardar-mini:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
+            background: #0d1820;
+            box-shadow: 0 0 15px rgba(42, 122, 216, 0.05), 0 0 0 1px rgba(42, 122, 216, 0.1);
         }
         .paradero-info {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             flex-wrap: wrap;
             flex: 1 1 60%;
         }
         .paradero-nombre {
             font-weight: 700;
-            font-size: 1.1rem !important;
+            font-size: 1rem !important;
             color: #ffffff !important;
-            min-width: 50px;
+            min-width: 45px;
         }
-        .paradero-nombre.destino-label {
-            color: #f5d060 !important;
-        }
+        .paradero-nombre.destino-label { color: #f5d060 !important; }
         .horario-llegada {
             background: #1a1a26;
-            padding: 3px 12px;
+            padding: 2px 10px;
             border-radius: 50px;
-            font-size: 1rem !important;
+            font-size: 0.85rem !important;
             font-weight: 600;
             color: #ffffff !important;
             border: 1px solid rgba(255,255,255,0.06);
         }
         .distancia {
-            font-size: 0.85rem !important;
+            font-size: 0.75rem !important;
             color: #a0b0c0 !important;
             background: #1a1a26;
-            padding: 2px 10px;
+            padding: 2px 8px;
             border-radius: 30px;
             border: 1px solid rgba(255,255,255,0.04);
         }
-        .diferencia {
-            font-size: 1rem !important;
-            font-weight: 700;
-            padding: 3px 12px;
-            border-radius: 30px;
-            min-width: 45px;
-            text-align: center;
-            border: 1px solid transparent;
-        }
-        .diferencia.adelantado { background: #1a3a2a; color: #6ad8b0 !important; border-color: #2a5a3a; }
-        .diferencia.atrasado { background: #3a1a1a; color: #f0a060 !important; border-color: #5a2a2a; }
-        .diferencia.exacto { background: #1a2a3a; color: #80b8d8 !important; border-color: #2a4a5a; }
-        .diferencia.pendiente { background: #1a1a26; color: #7a8a9a !important; border-color: #2a2a3a; }
         .estado-badge {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             font-weight: 600;
-            font-size: 0.95rem !important;
+            font-size: 0.85rem !important;
             color: #d0dce8;
         }
         .estado-badge .dot {
@@ -387,7 +285,7 @@
         }
         .dot.verde { background: #2a9d8f; }
         .dot.naranja { background: #f5a623; animation: pulse-dot 0.8s infinite; }
-        .dot.azul { background: #2a7ad8; animation: pulse-dot 1.2s infinite; }
+        .dot.azul { background: #2a7ad8; }
         .dot.gris { background: #4a4a5a; }
         .dot.oro { background: #d4a02a; }
         @keyframes pulse-dot {
@@ -399,13 +297,13 @@
         .mensaje-aviso {
             background: #0d0d15;
             color: #ffffff !important;
-            padding: 10px 16px;
+            padding: 10px 14px;
             border-radius: 40px;
             font-weight: 600;
             margin-top: 8px;
             text-align: center;
-            font-size: 1.2rem !important;
-            min-height: 44px;
+            font-size: 1.1rem !important;
+            min-height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -415,11 +313,18 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
         .mensaje-aviso strong { color: #ffffff !important; }
+        .mensaje-aviso .proximo-badge {
+            background: rgba(42,122,216,0.2);
+            padding: 2px 12px;
+            border-radius: 40px;
+            border: 1px solid rgba(42,122,216,0.3);
+            font-size: 0.9rem;
+        }
         .footer-time {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.85rem !important;
+            font-size: 0.75rem !important;
             color: #a0b0c0 !important;
             margin-top: 8px;
             border-top: 1px solid rgba(255,255,255,0.06);
@@ -429,69 +334,59 @@
         }
         .footer-time .alarma-status {
             background: #1a1a26;
-            padding: 3px 12px;
+            padding: 2px 10px;
             border-radius: 30px;
             font-weight: 600;
             color: #d0dce8 !important;
-            font-size: 0.85rem !important;
+            font-size: 0.75rem !important;
             border: 1px solid rgba(255,255,255,0.06);
         }
         .voz-indicador {
-            padding: 3px 12px;
+            padding: 2px 10px;
             border-radius: 30px;
             font-weight: 600;
-            font-size: 0.85rem !important;
+            font-size: 0.75rem !important;
             color: #ffffff !important;
             border: 1px solid rgba(255,255,255,0.08);
         }
         .voz-indicador.on { background: #1a3a2a; border-color: #2a5a3a; }
         .voz-indicador.off { background: #1a1a26; border-color: #2a2a3a; color: #6a7a8a !important; }
-        .voz-indicador.mujer { background: #3a1a3a; border-color: #5a2a5a; }
-        .voz-indicador.hombre { background: #1a2a3a; border-color: #2a4a5a; }
-        .voz-nombre {
-            font-size: 0.85rem !important;
-            color: #8a9aaa !important;
-            text-align: center;
-            margin-top: 2px;
-        }
         .badge-destino {
             background: #d4a02a;
             color: #0a0a0f !important;
-            font-size: 0.7rem !important;
+            font-size: 0.6rem !important;
             font-weight: 700;
-            padding: 2px 12px;
+            padding: 2px 10px;
             border-radius: 30px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        .badge-coordenada {
+        .badge-proximo {
             background: #2a4a6a;
             color: #ffffff !important;
             font-size: 0.6rem !important;
             font-weight: 600;
-            padding: 2px 8px;
+            padding: 2px 10px;
             border-radius: 30px;
         }
 
         @media (max-width: 480px) {
             .app-container { padding: 6px 4px; border-radius: 16px; }
-            h1 { font-size: 1.4rem !important; }
-            h1 span { font-size: 0.8rem !important; }
-            .gps-status { font-size: 1rem !important; padding: 6px 10px; }
-            .gps-status #gpsPrecision { font-size: 0.8rem !important; }
-            .route-selector label { font-size: 1rem !important; }
-            .route-selector select { font-size: 1rem !important; padding: 6px 10px; }
-            .btn-guardar { font-size: 0.9rem !important; padding: 8px 12px; }
-            .paradero-nombre { font-size: 0.9rem !important; }
-            .horario-llegada { font-size: 0.8rem !important; }
-            .distancia { font-size: 0.7rem !important; }
-            .diferencia { font-size: 0.8rem !important; padding: 2px 8px; min-width: 35px; }
-            .estado-badge { font-size: 0.8rem !important; }
-            .mensaje-aviso { font-size: 1rem !important; padding: 8px 12px; }
-            .footer-time { font-size: 0.7rem !important; }
-            .voz-indicador { font-size: 0.7rem !important; }
-            .menu-hamburguesa .menu-contenido { min-width: 180px; right: 0; left: auto; }
-            .menu-hamburguesa .menu-btn { font-size: 1.4rem !important; padding: 2px 10px; }
+            h1 { font-size: 1.3rem !important; }
+            h1 span { font-size: 0.7rem !important; }
+            .gps-status { font-size: 0.9rem !important; padding: 6px 10px; }
+            .gps-status #gpsPrecision { font-size: 0.7rem !important; }
+            .route-selector label { font-size: 0.9rem !important; }
+            .route-selector select { font-size: 0.9rem !important; padding: 6px 10px; }
+            .paradero-nombre { font-size: 0.85rem !important; }
+            .horario-llegada { font-size: 0.7rem !important; }
+            .distancia { font-size: 0.65rem !important; }
+            .estado-badge { font-size: 0.7rem !important; }
+            .mensaje-aviso { font-size: 0.9rem !important; padding: 8px 10px; }
+            .footer-time { font-size: 0.65rem !important; }
+            .voz-indicador { font-size: 0.65rem !important; }
+            .menu-hamburguesa .menu-contenido { min-width: 140px; right: 0; left: auto; }
+            .menu-hamburguesa .menu-btn { font-size: 1.2rem !important; padding: 2px 8px; }
         }
     </style>
 </head>
@@ -506,7 +401,6 @@
             <span class="dot-gps inactivo" id="gpsDot"></span>
             <span id="gpsTexto">📍 Iniciando GPS...</span>
             <span id="gpsPrecision" style="margin-left:auto;"></span>
-            <span id="horaActualDisplay" style="margin-left:6px;">--:--</span>
         </div>
 
         <div class="route-selector">
@@ -514,24 +408,15 @@
                 Ruta
                 <select id="rutaSelect"></select>
             </label>
-            <button class="btn-guardar" id="btnGuardarGlobal">📌 Guardar Ubicación</button>
             <div class="menu-hamburguesa">
                 <button class="menu-btn" id="menuToggle">☰</button>
                 <div class="menu-contenido" id="menuContenido">
                     <button class="btn-primary" id="reiniciarBtn">🔄 Reiniciar</button>
                     <button class="btn-primary btn-silenciar" id="silenciarBtn">🔇 Silenciar</button>
-                    <button class="btn-primary btn-voz" id="vozBtn">🔊 Voz ON</button>
-                    <div class="separador"></div>
-                    <div class="voz-selector">
-                        <button class="voz-btn activa-mujer" id="vozMujerBtn">👩 Femenina</button>
-                        <button class="voz-btn" id="vozHombreBtn">👨 Masculina</button>
-                        <button class="voz-btn" id="vozAutoBtn">🤖 Auto</button>
-                    </div>
+                    <button class="btn-primary btn-voz" id="vozBtn">🔊 Voz</button>
                 </div>
             </div>
         </div>
-
-        <div class="voz-nombre" id="vozNombreMostrar">Voz: Cargando...</div>
 
         <div id="paraderoContainer" class="paradero-grid"></div>
 
@@ -541,8 +426,8 @@
 
         <div class="footer-time">
             <span id="relojFooter">Actualizado</span>
-            <span class="alarma-status" id="alarmaStatus">Alarma</span>
-            <span class="voz-indicador on" id="vozStatus">ON</span>
+            <span class="alarma-status" id="alarmaStatus">🔊 Alarma</span>
+            <span class="voz-indicador on" id="vozStatus">🔊 Voz ON</span>
         </div>
     </div>
 
@@ -551,7 +436,7 @@
             "use strict";
 
             // ============================================================
-            //  RUTAS CON COORDENADAS REALES DEL KML
+            //  RUTAS CON COORDENADAS REALES
             // ============================================================
             const DESTINO_FINAL = {
                 nombre: "Campamento IMCO - Cerro Verde",
@@ -645,20 +530,18 @@
             let paraderosActuales = [];
             let alarmaActivada = true;
             let vozActivada = true;
-            let vozGenero = 'mujer';
-            let ultimoAlertNombre = "";
             let audioCtx = null;
             let intervaloReloj = null;
             let intervaloVerificacion = null;
-            let intervaloHora = null;
             let synth = window.speechSynthesis;
             let vozSeleccionada = null;
             let gpsActivo = false;
             let ubicacionActual = null;
             let watchId = null;
             let RADIO_DETECCION = 80;
-            let horaActualStr = "";
-            let horaSimulada = null;
+
+            // ===== NOTIFICACIONES ÚNICAS =====
+            let notificacionesLlegada = {};
 
             // DOM
             const rutaSelect = document.getElementById('rutaSelect');
@@ -671,15 +554,9 @@
             const gpsDot = document.getElementById('gpsDot');
             const gpsTexto = document.getElementById('gpsTexto');
             const gpsPrecision = document.getElementById('gpsPrecision');
-            const horaActualDisplay = document.getElementById('horaActualDisplay');
             const reiniciarBtn = document.getElementById('reiniciarBtn');
             const silenciarBtn = document.getElementById('silenciarBtn');
             const vozBtn = document.getElementById('vozBtn');
-            const vozMujerBtn = document.getElementById('vozMujerBtn');
-            const vozHombreBtn = document.getElementById('vozHombreBtn');
-            const vozAutoBtn = document.getElementById('vozAutoBtn');
-            const vozNombreMostrar = document.getElementById('vozNombreMostrar');
-            const btnGuardarGlobal = document.getElementById('btnGuardarGlobal');
             const menuToggle = document.getElementById('menuToggle');
             const menuContenido = document.getElementById('menuContenido');
 
@@ -701,34 +578,13 @@
             //  FUNCIONES DE TIEMPO
             // ============================================================
             function obtenerHoraActual() {
-                if (horaSimulada) return horaSimulada;
                 const ahora = new Date();
                 return String(ahora.getHours()).padStart(2, '0') + ':' + String(ahora.getMinutes()).padStart(2, '0');
-            }
-
-            function obtenerMinutosActuales() {
-                const horaStr = obtenerHoraActual();
-                const partes = horaStr.split(':');
-                return parseInt(partes[0], 10) * 60 + parseInt(partes[1], 10);
             }
 
             function horaAMinutos(horaStr) {
                 const partes = horaStr.split(':');
                 return parseInt(partes[0], 10) * 60 + parseInt(partes[1], 10);
-            }
-
-            function calcularDiferenciaHoraria(horaParadero) {
-                const minsAhora = obtenerMinutosActuales();
-                const minsParadero = horaAMinutos(horaParadero);
-                return minsAhora - minsParadero;
-            }
-
-            function formatearDiferencia(diff) {
-                if (diff === 0) return { texto: "0 min", clase: "exacto" };
-                const absDiff = Math.abs(diff);
-                const signo = diff > 0 ? "+" : "-";
-                const clase = diff > 0 ? "atrasado" : "adelantado";
-                return { texto: `${signo}${absDiff} min`, clase: clase };
             }
 
             // ============================================================
@@ -758,10 +614,9 @@
                         ubicacionActual = { lat: pos.coords.latitude, lng: pos.coords.longitude };
                         const precision = pos.coords.accuracy;
                         gpsDot.className = 'dot-gps activo';
-                        gpsTexto.textContent = `${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)}`;
+                        gpsTexto.textContent = '📍 GPS activo';
                         gpsPrecision.textContent = `±${Math.round(precision)}m`;
                         verificarProximidadGPS();
-                        verificarHorarios();
                     },
                     function(err) {
                         gpsActivo = false;
@@ -773,135 +628,127 @@
                 );
             }
 
+            // ============================================================
+            //  VERIFICAR PROXIMIDAD GPS - SOLO ALERTA DE LLEGADA
+            // ============================================================
             function verificarProximidadGPS() {
                 if (!ubicacionActual || !paraderosActuales) return;
-                let paraderoCercano = null;
+
+                let paraderoEncontrado = null;
+                let indexEncontrado = -1;
                 let distanciaMinima = Infinity;
 
-                for (let p of paraderosActuales) {
-                    if (p.estado === 'pasado') { p.cercano = false; continue; }
+                // Buscar el paradero más cercano
+                for (let i = 0; i < paraderosActuales.length; i++) {
+                    const p = paraderosActuales[i];
+                    if (p.estado === 'pasado') continue;
                     if (p.lat && p.lng) {
                         const dist = calcularDistancia(ubicacionActual.lat, ubicacionActual.lng, p.lat, p.lng);
                         p.distancia = Math.round(dist);
-                        p.cercano = dist < RADIO_DETECCION;
-                        if (p.cercano && p.estado !== 'pasado' && dist < distanciaMinima) {
+                        if (dist < RADIO_DETECCION && dist < distanciaMinima) {
                             distanciaMinima = dist;
-                            paraderoCercano = p;
+                            paraderoEncontrado = p;
+                            indexEncontrado = i;
                         }
                     }
                 }
 
-                if (paraderoCercano && paraderoCercano.estado === 'pendiente') {
-                    paraderoCercano.estado = 'alert';
-                    ultimoAlertNombre = paraderoCercano.nombre;
-                    tocarAlarmaLarga();
-                    const mensajeVoz = `Llegada a ${paraderoCercano.nombre} por GPS`;
-                    hablar(mensajeVoz);
-                    setTimeout(() => { if (alarmaActivada) tocarBip(600, 0.2, 0.2); }, 1500);
-                    setTimeout(() => { ultimoAlertNombre = ""; }, 4000);
-                    renderizarParaderos();
-                    actualizarMensaje();
-                }
-                renderizarParaderos();
-            }
+                // ===== ALERTA DE LLEGADA (UNA SOLA VEZ) =====
+                if (paraderoEncontrado && paraderoEncontrado.estado === 'pendiente') {
+                    if (!notificacionesLlegada[indexEncontrado]) {
+                        notificacionesLlegada[indexEncontrado] = true;
+                        paraderoEncontrado.estado = 'alert';
 
-            function guardarUbicacionParadero(index) {
-                if (!ubicacionActual) {
-                    alert('📍 No hay ubicación GPS disponible. Espera a que se active el GPS.');
-                    return;
-                }
+                        // Alarma y voz
+                        tocarAlarmaLarga();
+                        const mensajeVoz = `Llegada a ${paraderoEncontrado.nombre}`;
+                        hablar(mensajeVoz);
+                        setTimeout(() => { if (alarmaActivada) tocarBip(600, 0.2, 0.2); }, 1500);
 
-                const paradero = paraderosActuales[index];
-                if (!paradero) return;
+                        // Mostrar mensaje de llegada
+                        mostrarMensajeLlegada(paraderoEncontrado, indexEncontrado);
 
-                paradero.lat = ubicacionActual.lat;
-                paradero.lng = ubicacionActual.lng;
+                        // Marcar como pasado después de 5 segundos
+                        setTimeout(() => {
+                            paraderoEncontrado.estado = 'pasado';
+                            renderizarParaderos();
+                            mostrarProximoParadero();
+                        }, 5000);
 
-                mensajeDiv.innerHTML = `
-                    <span>✅</span> Coordenadas guardadas para <strong>${paradero.nombre}</strong>:<br>
-                    ${ubicacionActual.lat.toFixed(6)}, ${ubicacionActual.lng.toFixed(6)}
-                `;
-
-                renderizarParaderos();
-                const cards = container.querySelectorAll('.paradero-card');
-                if (cards[index]) cards[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
-                menuContenido.classList.remove('abierto');
-            }
-
-            window.guardarUbicacion = function(index) {
-                guardarUbicacionParadero(index);
-            };
-
-            btnGuardarGlobal.addEventListener('click', function() {
-                if (!ubicacionActual) {
-                    alert('📍 No hay ubicación GPS disponible.');
-                    return;
-                }
-
-                let masCercano = null;
-                let distMin = Infinity;
-                let indexCercano = -1;
-
-                for (let i = 0; i < paraderosActuales.length; i++) {
-                    const p = paraderosActuales[i];
-                    if (p.estado === 'pasado' || p.esDestino) continue;
-                    if (p.lat && p.lng) {
-                        const dist = calcularDistancia(ubicacionActual.lat, ubicacionActual.lng, p.lat, p.lng);
-                        if (dist < distMin) {
-                            distMin = dist;
-                            masCercano = p;
-                            indexCercano = i;
-                        }
+                        renderizarParaderos();
                     }
                 }
 
-                if (masCercano && indexCercano >= 0) {
-                    guardarUbicacionParadero(indexCercano);
+                // Actualizar distancias en la interfaz
+                renderizarParaderos();
+            }
+
+            // ============================================================
+            //  MOSTRAR MENSAJE DE LLEGADA Y PRÓXIMO PARADERO
+            // ============================================================
+            function mostrarMensajeLlegada(paradero, index) {
+                // Buscar próximo paradero
+                let proximo = null;
+                for (let i = index + 1; i < paraderosActuales.length; i++) {
+                    if (paraderosActuales[i].estado !== 'pasado' && paraderosActuales[i].estado !== 'alert') {
+                        proximo = paraderosActuales[i];
+                        break;
+                    }
+                }
+
+                let html = `<span>🔔</span> Llegaste a <strong>${paradero.nombre}</strong>! ✅`;
+
+                if (proximo) {
+                    html += `<br><span class="proximo-badge">📍 Próximo: <strong>${proximo.nombre}</strong></span>`;
+                    // También anunciar por voz el próximo paradero
+                    setTimeout(() => {
+                        const vozProximo = `Próximo paradero: ${proximo.nombre}`;
+                        hablar(vozProximo);
+                    }, 2000);
                 } else {
-                    alert('⚠️ No hay paraderos disponibles para guardar ubicación.');
+                    // Si no hay próximo, es el destino final
+                    html += `<br><span class="proximo-badge">🏁 Has llegado al destino final!</span>`;
                 }
-            });
+
+                mensajeDiv.innerHTML = html;
+            }
+
+            function mostrarProximoParadero() {
+                // Buscar el primer paradero pendiente
+                const proximo = paraderosActuales.find(p => p.estado === 'pendiente');
+                if (proximo) {
+                    // No sobrescribir si ya hay un mensaje especial
+                    if (!mensajeDiv.innerHTML.includes('Llegaste a')) {
+                        mensajeDiv.innerHTML = `
+                            <span>📍</span> Próximo paradero: <strong>${proximo.nombre}</strong>
+                            <span class="proximo-badge">⏱️ ${proximo.hora}</span>
+                        `;
+                    }
+                } else {
+                    const todosPasados = paraderosActuales.every(p => p.estado === 'pasado' || p.estado === 'alert');
+                    if (todosPasados && paraderosActuales.length > 0) {
+                        mensajeDiv.innerHTML = `<span>✅</span> Llegaste a <strong>Campamento IMCO - Cerro Verde</strong>! 🏁`;
+                    }
+                }
+            }
 
             // ============================================================
             //  VOCES
             // ============================================================
-            function cargarVoces() {
+            function cargarVoz() {
                 if (!synth) return;
                 const voces = synth.getVoices();
                 const vocesES = voces.filter(v => v.lang.startsWith('es'));
-                if (vocesES.length === 0) { vozNombreMostrar.textContent = 'Voz: No disponible'; return; }
-
-                const femeninas = vocesES.filter(v => v.name.toLowerCase().includes('mexico') || v.name.toLowerCase().includes('mex') || v.name.toLowerCase().includes('latino') || v.name.toLowerCase().includes('samantha') || v.name.toLowerCase().includes('monica') || v.name.toLowerCase().includes('maria') || v.name.toLowerCase().includes('paulina') || v.name.toLowerCase().includes('female'));
-                const masculinas = vocesES.filter(v => v.name.toLowerCase().includes('david') || v.name.toLowerCase().includes('juan') || v.name.toLowerCase().includes('carlos') || v.name.toLowerCase().includes('jorge') || v.name.toLowerCase().includes('male'));
-                const latinas = vocesES.filter(v => v.lang.includes('es-MX') || v.lang.includes('es-AR') || v.lang.includes('es-CO') || v.lang.includes('es-CL') || v.lang.includes('es-PE'));
-
-                let vocesFiltradas = [];
-                if (vozGenero === 'mujer') { vocesFiltradas = femeninas.length > 0 ? femeninas : latinas; if (vocesFiltradas.length === 0) vocesFiltradas = vocesES; }
-                else if (vozGenero === 'hombre') { vocesFiltradas = masculinas.length > 0 ? masculinas : latinas; if (vocesFiltradas.length === 0) vocesFiltradas = vocesES; }
-                else { vocesFiltradas = femeninas.filter(v => v.lang.includes('es-MX') || v.lang.includes('es-AR')); if (vocesFiltradas.length === 0) vocesFiltradas = femeninas; if (vocesFiltradas.length === 0) vocesFiltradas = latinas; if (vocesFiltradas.length === 0) vocesFiltradas = vocesES; }
-
-                vozSeleccionada = vocesFiltradas[0] || vocesES[0] || null;
-                if (vozSeleccionada) {
-                    let nombre = vozSeleccionada.name;
-                    let pais = vozSeleccionada.lang.split('-')[1] || '';
-                    vozNombreMostrar.textContent = `Voz: ${nombre} ${pais ? '('+pais+')' : ''}`;
-                } else { vozNombreMostrar.textContent = 'Voz: No disponible'; }
-
-                [vozMujerBtn, vozHombreBtn, vozAutoBtn].forEach(b => b.classList.remove('activa-mujer', 'activa-hombre', 'activa-auto'));
-                if (vozGenero === 'mujer') vozMujerBtn.classList.add('activa-mujer');
-                else if (vozGenero === 'hombre') vozHombreBtn.classList.add('activa-hombre');
-                else vozAutoBtn.classList.add('activa-auto');
-                actualizarIndicadorVoz();
-            }
-
-            function actualizarIndicadorVoz() {
-                vozStatusSpan.className = 'voz-indicador';
-                if (vozActivada) {
-                    vozStatusSpan.classList.add('on');
-                    if (vozGenero === 'mujer') { vozStatusSpan.classList.add('mujer'); vozStatusSpan.textContent = 'Voz'; }
-                    else if (vozGenero === 'hombre') { vozStatusSpan.classList.add('hombre'); vozStatusSpan.textContent = 'Voz'; }
-                    else { vozStatusSpan.textContent = 'Voz'; }
-                } else { vozStatusSpan.classList.add('off'); vozStatusSpan.textContent = 'OFF'; }
+                if (vocesES.length > 0) {
+                    // Buscar voz femenina latina
+                    let voz = vocesES.find(v => v.name.toLowerCase().includes('mexico') || 
+                                                  v.name.toLowerCase().includes('mex') || 
+                                                  v.name.toLowerCase().includes('latino') ||
+                                                  v.name.toLowerCase().includes('samantha') ||
+                                                  v.name.toLowerCase().includes('monica'));
+                    if (!voz) voz = vocesES[0];
+                    vozSeleccionada = voz;
+                }
             }
 
             function hablar(texto) {
@@ -916,9 +763,9 @@
             }
 
             if (synth) {
-                synth.onvoiceschanged = () => { setTimeout(cargarVoces, 200); };
-                setTimeout(cargarVoces, 300);
-                setTimeout(cargarVoces, 1000);
+                synth.onvoiceschanged = () => { setTimeout(cargarVoz, 200); };
+                setTimeout(cargarVoz, 300);
+                setTimeout(cargarVoz, 1000);
             }
 
             // ============================================================
@@ -968,97 +815,75 @@
                     lat: p.lat || null,
                     lng: p.lng || null,
                     estado: 'pendiente',
-                    cercano: false,
                     distancia: null,
-                    diferencia: 0,
-                    horaDeEstar: false,
                     esDestino: index === data.paraderos.length - 1
                 }));
                 rutaNombreSpan.textContent = data.nombre;
                 paraderosActuales.sort((a, b) => horaAMinutos(a.hora) - horaAMinutos(b.hora));
-                ultimoAlertNombre = "";
-                verificarHorarios();
+
+                notificacionesLlegada = {};
+
                 renderizarParaderos();
-                actualizarMensaje();
+                mostrarProximoParadero();
             }
 
             function renderizarParaderos() {
                 let html = '';
+                let proximoIndex = -1;
+
+                // Encontrar el próximo paradero para marcarlo
+                for (let i = 0; i < paraderosActuales.length; i++) {
+                    if (paraderosActuales[i].estado === 'pendiente') {
+                        proximoIndex = i;
+                        break;
+                    }
+                }
+
                 for (let i = 0; i < paraderosActuales.length; i++) {
                     const p = paraderosActuales[i];
                     let claseCard = 'paradero-card';
                     let dotClase = 'dot';
                     let estadoTexto = '';
                     let distanciaHtml = '';
-                    let diferenciaHtml = '';
                     let badgeHtml = '';
-                    let coordsHtml = '';
-
-                    const diff = calcularDiferenciaHoraria(p.hora);
-                    p.diferencia = diff;
-                    const diffInfo = formatearDiferencia(diff);
 
                     if (p.esDestino) {
                         badgeHtml = `<span class="badge-destino">Destino</span>`;
                         claseCard += ' destino';
                     }
 
-                    if (p.lat && p.lng) {
-                        coordsHtml = `<span class="badge-coordenada">📍 ${p.lat.toFixed(4)}, ${p.lng.toFixed(4)}</span>`;
-                    }
-
                     if (p.estado === 'alert') {
                         claseCard += ' alert';
                         dotClase += ' naranja';
-                        estadoTexto = 'Ahora!';
+                        estadoTexto = '¡Ahora!';
                     } else if (p.estado === 'pasado') {
                         claseCard += ' passed';
                         dotClase += ' gris';
                         estadoTexto = 'Pasado';
-                    } else if (p.cercano) {
-                        claseCard += ' cercano';
+                    } else if (i === proximoIndex && p.estado === 'pendiente') {
+                        claseCard += ' proximo';
                         dotClase += ' azul';
-                        estadoTexto = 'Cerca';
-                    } else if (p.estado === 'pendiente' && p.horaDeEstar) {
-                        claseCard += ' parpadeo-azul';
-                        dotClase += ' azul';
-                        estadoTexto = 'Debes estar aquí!';
+                        estadoTexto = '⬅️ Próximo';
+                        badgeHtml += `<span class="badge-proximo">Próximo</span>`;
                     } else if (p.estado === 'pendiente') {
-                        if (diff < -2) { claseCard += ' adelantado'; estadoTexto = 'Pendiente'; }
-                        else if (diff > 2) { claseCard += ' atrasado'; estadoTexto = 'Pendiente'; }
-                        else { estadoTexto = 'Pendiente'; }
                         dotClase += ' verde';
-                    }
-
-                    if (p.estado === 'pendiente' || p.estado === 'alert') {
-                        diferenciaHtml = `<span class="diferencia ${diffInfo.clase}">${diffInfo.texto}</span>`;
+                        estadoTexto = 'Pendiente';
                     }
 
                     if (p.distancia !== null && p.distancia !== undefined) {
                         distanciaHtml = `<span class="distancia">${p.distancia}m</span>`;
                     }
 
-                    const btnGuardar = p.esDestino ? '' : `
-                        <button class="btn-guardar-mini" data-index="${i}" onclick="window.guardarUbicacion(${i})">
-                            📌 Guardar
-                        </button>
-                    `;
-
                     html += `
                         <div class="${claseCard}">
                             <div class="paradero-info">
                                 <span class="paradero-nombre ${p.esDestino ? 'destino-label' : ''}">${p.nombre}</span>
                                 ${badgeHtml}
-                                ${coordsHtml}
                                 <span class="horario-llegada">${p.hora}</span>
                                 ${distanciaHtml}
-                                ${diferenciaHtml}
                             </div>
-                            <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;">
-                                ${btnGuardar}
-                                <div class="estado-badge">
-                                    <span class="${dotClase}"></span> ${estadoTexto}
-                                </div>
+                            <div class="estado-badge">
+                                <span class="${dotClase}"></span> ${estadoTexto}
                             </div>
                         </div>
                     `;
@@ -1066,120 +891,64 @@
                 container.innerHTML = html;
             }
 
-            function verificarHorarios() {
-                const minutosAhora = obtenerMinutosActuales();
-                let hayAlert = false;
-                let nuevoAlertNombre = "";
-
-                for (let p of paraderosActuales) {
-                    if (p.estado === 'pasado') continue;
-                    const minsP = horaAMinutos(p.hora);
-                    const diff = minutosAhora - minsP;
-                    p.horaDeEstar = (diff >= 0 && diff < 2 && p.estado !== 'pasado' && p.estado !== 'alert');
-
-                    if (minsP <= minutosAhora) {
-                        if (p.estado === 'pendiente') {
-                            p.estado = 'alert';
-                            hayAlert = true;
-                            nuevoAlertNombre = p.nombre;
-                        } else if (p.estado === 'alert') {
-                            if (diff >= 2) { p.estado = 'pasado'; p.horaDeEstar = false; }
-                            else { hayAlert = true; nuevoAlertNombre = p.nombre; }
-                        }
-                    } else {
-                        if (p.estado === 'alert') { p.estado = 'pendiente'; p.horaDeEstar = false; }
-                    }
-                }
-
-                for (let p of paraderosActuales) {
-                    const minsP = horaAMinutos(p.hora);
-                    const diff = minutosAhora - minsP;
-                    if (minsP <= minutosAhora && p.estado === 'pendiente') {
-                        if (diff < 2) { p.estado = 'alert'; p.horaDeEstar = false; hayAlert = true; nuevoAlertNombre = p.nombre; }
-                        else { p.horaDeEstar = true; }
-                    } else if (minsP <= minutosAhora && p.estado === 'alert') {
-                        if (diff >= 2) { p.estado = 'pasado'; p.horaDeEstar = false; }
-                        else { hayAlert = true; nuevoAlertNombre = p.nombre; }
-                    } else if (minsP > minutosAhora) {
-                        if (p.estado === 'alert') { p.estado = 'pendiente'; p.horaDeEstar = false; }
-                    }
-                }
-
-                if (hayAlert && nuevoAlertNombre && nuevoAlertNombre !== ultimoAlertNombre) {
-                    ultimoAlertNombre = nuevoAlertNombre;
-                    tocarAlarmaLarga();
-                    const mensajeVoz = `Llegada a ${nuevoAlertNombre}`;
-                    hablar(mensajeVoz);
-                    setTimeout(() => { if (alarmaActivada) tocarBip(600, 0.2, 0.2); }, 1500);
-                    setTimeout(() => { ultimoAlertNombre = ""; }, 4000);
-                }
-                if (!hayAlert) { ultimoAlertNombre = ""; }
-
-                horaActualStr = obtenerHoraActual();
-                horaActualDisplay.textContent = `${horaActualStr}`;
-                renderizarParaderos();
-                actualizarMensaje();
-                footerReloj.textContent = `${horaActualStr}`;
-            }
-
-            function actualizarMensaje() {
-                const alerta = paraderosActuales.find(p => p.estado === 'alert');
-                const horaDeEstar = paraderosActuales.find(p => p.horaDeEstar && p.estado !== 'pasado' && p.estado !== 'alert');
-                const cercano = paraderosActuales.find(p => p.cercano && p.estado !== 'pasado');
-                const proximo = paraderosActuales.find(p => p.estado === 'pendiente' && !p.cercano && !p.horaDeEstar);
-
-                let diffMsg = '';
-                if (proximo) {
-                    const diff = calcularDiferenciaHoraria(proximo.hora);
-                    if (diff < -2) { diffMsg = ` ${Math.abs(diff)} min antes`; }
-                    else if (diff > 2) { diffMsg = ` +${diff} min tarde`; }
-                    else { diffMsg = ' En horario'; }
-                }
-
-                if (alerta) {
-                    mensajeDiv.innerHTML = `
-                        <span>🔔</span> Llegada a <strong>${alerta.nombre}</strong>! (${alerta.hora})
-                        <span style="background:rgba(255,255,255,0.08);padding:2px 14px;border-radius:40px;border:1px solid rgba(255,255,255,0.1);">Ahora!</span>
-                    `;
-                } else if (horaDeEstar) {
-                    mensajeDiv.innerHTML = `
-                        <span>🔵</span> <strong>${horaDeEstar.nombre}</strong>! Ya deberías estar allí (${horaDeEstar.hora})
-                        <span style="background:rgba(42,122,216,0.2);padding:2px 14px;border-radius:40px;border:1px solid rgba(42,122,216,0.3);">Es hora!</span>
-                    `;
-                } else if (cercano) {
-                    mensajeDiv.innerHTML = `<span>📍</span> Estás cerca de <strong>${cercano.nombre}</strong>! (${cercano.distancia}m)`;
-                } else if (proximo) {
-                    mensajeDiv.innerHTML = `
-                        <span>⏳</span> Próximo: <strong>${proximo.nombre}</strong> a las ${proximo.hora}
-                        <span style="background:rgba(255,255,255,0.04);padding:2px 12px;border-radius:40px;font-size:0.85rem;border:1px solid rgba(255,255,255,0.06);">${diffMsg}</span>
-                    `;
+            function actualizarVozStatus() {
+                vozStatusSpan.className = 'voz-indicador';
+                if (vozActivada) {
+                    vozStatusSpan.classList.add('on');
+                    vozStatusSpan.textContent = '🔊 Voz ON';
                 } else {
-                    const todosPasados = paraderosActuales.every(p => p.estado === 'pasado');
-                    mensajeDiv.innerHTML = todosPasados && paraderosActuales.length > 0
-                        ? `<span>✅</span> Llegaste a <strong>Campamento IMCO - Cerro Verde</strong>!`
-                        : `<span>⏳</span> Esperando siguiente llegada...`;
+                    vozStatusSpan.classList.add('off');
+                    vozStatusSpan.textContent = '🔇 Voz OFF';
                 }
-
-                alarmaStatusSpan.textContent = alarmaActivada ? 'Alarma' : 'Silenciada';
-                alarmaStatusSpan.style.background = alarmaActivada ? '#1a2a3a' : '#1a1a26';
-                actualizarIndicadorVoz();
             }
 
             // ============================================================
-            //  CONTROLES (desde menú)
+            //  CONTROLES
             // ============================================================
-            function reiniciarRuta() { cargarRuta(rutaSelect.value); verificarHorarios(); renderizarParaderos(); actualizarMensaje(); footerReloj.textContent = `${obtenerHoraActual()}`; ultimoAlertNombre = ""; if (synth) synth.cancel(); menuContenido.classList.remove('abierto'); }
-            function cambiarRuta() { rutaActual = rutaSelect.value; cargarRuta(rutaActual); verificarHorarios(); renderizarParaderos(); actualizarMensaje(); footerReloj.textContent = `${obtenerHoraActual()}`; ultimoAlertNombre = ""; if (synth) synth.cancel(); }
-            function toggleSilenciar() { alarmaActivada = !alarmaActivada; if (alarmaActivada) tocarBip(800, 0.15, 0.15); actualizarMensaje(); silenciarBtn.textContent = alarmaActivada ? '🔇 Silenciar' : '🔊 Activar'; menuContenido.classList.remove('abierto'); }
-            function toggleVoz() { vozActivada = !vozActivada; if (vozActivada) { setTimeout(() => hablar("Voz activada"), 300); } else { if (synth) synth.cancel(); } actualizarMensaje(); vozBtn.textContent = vozActivada ? '🔊 Voz ON' : '🔇 Voz OFF'; menuContenido.classList.remove('abierto'); }
-            function setVozGenero(genero) { vozGenero = genero; cargarVoces(); if (vozActivada) { setTimeout(() => hablar("Voz seleccionada"), 400); } menuContenido.classList.remove('abierto'); }
+            function reiniciarRuta() {
+                cargarRuta(rutaSelect.value);
+                renderizarParaderos();
+                mostrarProximoParadero();
+                footerReloj.textContent = `${obtenerHoraActual()}`;
+                notificacionesLlegada = {};
+                if (synth) synth.cancel();
+                menuContenido.classList.remove('abierto');
+            }
+
+            function cambiarRuta() {
+                rutaActual = rutaSelect.value;
+                cargarRuta(rutaActual);
+                renderizarParaderos();
+                mostrarProximoParadero();
+                footerReloj.textContent = `${obtenerHoraActual()}`;
+                notificacionesLlegada = {};
+                if (synth) synth.cancel();
+            }
+
+            function toggleSilenciar() {
+                alarmaActivada = !alarmaActivada;
+                if (alarmaActivada) tocarBip(800, 0.15, 0.15);
+                alarmaStatusSpan.textContent = alarmaActivada ? '🔊 Alarma' : '🔇 Silenciada';
+                alarmaStatusSpan.style.background = alarmaActivada ? '#1a2a3a' : '#1a1a26';
+                silenciarBtn.textContent = alarmaActivada ? '🔇 Silenciar' : '🔊 Activar';
+                menuContenido.classList.remove('abierto');
+            }
+
+            function toggleVoz() {
+                vozActivada = !vozActivada;
+                if (vozActivada) {
+                    setTimeout(() => hablar("Voz activada"), 300);
+                } else {
+                    if (synth) synth.cancel();
+                }
+                actualizarVozStatus();
+                vozBtn.textContent = vozActivada ? '🔊 Voz ON' : '🔇 Voz OFF';
+                menuContenido.classList.remove('abierto');
+            }
 
             reiniciarBtn.addEventListener('click', reiniciarRuta);
             silenciarBtn.addEventListener('click', toggleSilenciar);
             vozBtn.addEventListener('click', toggleVoz);
-            vozMujerBtn.addEventListener('click', () => setVozGenero('mujer'));
-            vozHombreBtn.addEventListener('click', () => setVozGenero('hombre'));
-            vozAutoBtn.addEventListener('click', () => setVozGenero('auto'));
             rutaSelect.addEventListener('change', cambiarRuta);
 
             // ============================================================
@@ -1199,11 +968,13 @@
             function iniciarIntervalos() {
                 if (intervaloReloj) clearInterval(intervaloReloj);
                 if (intervaloVerificacion) clearInterval(intervaloVerificacion);
-                if (intervaloHora) clearInterval(intervaloHora);
 
                 intervaloReloj = setInterval(() => { footerReloj.textContent = `${obtenerHoraActual()}`; }, 10000);
-                intervaloVerificacion = setInterval(() => { verificarHorarios(); if (gpsActivo && ubicacionActual) { verificarProximidadGPS(); } }, 5000);
-                intervaloHora = setInterval(() => { horaActualStr = obtenerHoraActual(); horaActualDisplay.textContent = `${horaActualStr}`; }, 1000);
+                intervaloVerificacion = setInterval(() => {
+                    if (gpsActivo && ubicacionActual) {
+                        verificarProximidadGPS();
+                    }
+                }, 5000);
             }
 
             function init() {
@@ -1211,11 +982,11 @@
                 rutaActual = 'ruta1';
                 rutaSelect.value = 'ruta1';
                 cargarRuta('ruta1');
-                verificarHorarios();
                 renderizarParaderos();
-                actualizarMensaje();
+                mostrarProximoParadero();
                 iniciarIntervalos();
                 footerReloj.textContent = `${obtenerHoraActual()}`;
+                actualizarVozStatus();
 
                 document.addEventListener('touchstart', () => { initAudio(); }, { once: true });
                 document.addEventListener('click', () => { initAudio(); }, { once: true });
@@ -1230,7 +1001,6 @@
             window.addEventListener('beforeunload', () => {
                 if (intervaloReloj) clearInterval(intervaloReloj);
                 if (intervaloVerificacion) clearInterval(intervaloVerificacion);
-                if (intervaloHora) clearInterval(intervaloHora);
                 if (watchId) navigator.geolocation.clearWatch(watchId);
                 if (audioCtx) audioCtx.close();
                 if (synth) synth.cancel();
