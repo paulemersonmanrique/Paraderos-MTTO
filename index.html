@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Paraderos · Notificación GPS</title>
+    <title>Paraderos · Más Cercano</title>
     <style>
         * {
             margin: 0;
@@ -255,11 +255,6 @@
             background: #0d1210;
             opacity: 0.5;
         }
-        .paradero-card.destino {
-            border-left-color: #d4a02a;
-            background: #1a180d;
-            box-shadow: 0 0 25px rgba(212, 160, 42, 0.08), 0 0 0 1px rgba(212, 160, 42, 0.15);
-        }
         .paradero-card.proximo {
             border-left-color: #2a7ad8;
             background: #0d1820;
@@ -278,7 +273,6 @@
             color: #ffffff !important;
             min-width: 50px;
         }
-        .paradero-nombre.destino-label { color: #f5d060 !important; }
         .distancia {
             font-size: 0.8rem !important;
             color: #a0b0c0 !important;
@@ -305,7 +299,6 @@
         .dot.naranja { background: #f5a623; animation: pulse-dot 0.8s infinite; }
         .dot.azul { background: #2a7ad8; }
         .dot.gris { background: #4a4a5a; }
-        .dot.oro { background: #d4a02a; }
         @keyframes pulse-dot {
             0% { opacity: 0.4; transform: scale(0.8); }
             50% { opacity: 1; transform: scale(1.4); }
@@ -369,24 +362,6 @@
         }
         .voz-indicador.on { background: #1a3a2a; border-color: #2a5a3a; }
         .voz-indicador.off { background: #1a1a26; border-color: #2a2a3a; color: #6a7a8a !important; }
-        .badge-destino {
-            background: #d4a02a;
-            color: #0a0a0f !important;
-            font-size: 0.65rem !important;
-            font-weight: 700;
-            padding: 2px 12px;
-            border-radius: 30px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .badge-proximo {
-            background: #2a4a6a;
-            color: #ffffff !important;
-            font-size: 0.65rem !important;
-            font-weight: 600;
-            padding: 2px 12px;
-            border-radius: 30px;
-        }
 
         @media (max-width: 480px) {
             .app-container { padding: 6px 4px; border-radius: 16px; }
@@ -412,7 +387,7 @@
     <div class="app-container">
         <h1>
             Paraderos
-            <span id="rutaNombre">Ruta 1</span>
+            <span id="rutaNombre">Más Cercano</span>
         </h1>
 
         <div class="audio-activador" id="audioActivador">
@@ -427,8 +402,10 @@
 
         <div class="route-selector">
             <label>
-                Ruta
-                <select id="rutaSelect"></select>
+                Zona
+                <select id="rutaSelect">
+                    <option value="todas">Todos los paraderos</option>
+                </select>
             </label>
             <div class="menu-hamburguesa">
                 <button class="menu-btn" id="menuToggle">☰</button>
@@ -443,7 +420,7 @@
         <div id="paraderoContainer" class="paradero-grid"></div>
 
         <div id="mensajeAviso" class="mensaje-aviso">
-            <span>⏳</span> Esperando siguiente llegada...
+            <span>📍</span> Buscando paradero más cercano...
         </div>
 
         <div class="footer-time">
@@ -458,98 +435,48 @@
             "use strict";
 
             // ============================================================
-            //  RUTAS CON COORDENADAS ACTUALIZADAS
-            //  DESTINO FINAL: CAMPAMENTO IMCO - CERRO VERDE
-            //  Coordenadas actualizadas: -16.559817000051744, -71.59903953841723
+            //  LISTA DE PARADEROS
             // ============================================================
-            const DESTINO_FINAL = {
-                nombre: "Campamento IMCO - Cerro Verde",
-                lat: -16.559817000051744,
-                lng: -71.59903953841723
-            };
-
-            const rutasData = {
-                ruta1: {
-                    nombre: "Evitamiento con Aviación",
-                    paraderos: [
-                        { nombre: "Evitamiento con Aviación", lat: -16.3428196, lng: -71.5812588 },
-                        { nombre: "Frente a la Iglesia Zamácola", lat: -16.3541564, lng: -71.5678788 },
-                        { nombre: "Paradero Frente a Grifo Primax", lat: -16.3645424, lng: -71.561284 },
-                        { nombre: "Metro", lat: -16.3755462, lng: -71.5578498 },
-                        { nombre: "Paradero Socosani", lat: -16.3832443, lng: -71.5564022 },
-                        { nombre: "Real Plaza", lat: -16.3893312, lng: -71.5487669 },
-                        { ...DESTINO_FINAL }
-                    ]
-                },
-                ruta2: {
-                    nombre: "Mercado 3 de Octubre",
-                    paraderos: [
-                        { nombre: "Mercado 3 de Octubre", lat: -16.4434523, lng: -71.5183875 },
-                        { nombre: "Grifo San Fernando", lat: -16.4418899, lng: -71.5287916 },
-                        { nombre: "Comisaría Ciudad Mi Trabajo", lat: -16.4482283, lng: -71.5324965 },
-                        { nombre: "Colegio Juan Pablo", lat: -16.4475529, lng: -71.5515482 },
-                        { nombre: "BCP", lat: -16.4396019, lng: -71.5593696 },
-                        { nombre: "Puente Bailey", lat: -16.4434122, lng: -71.5735127 },
-                        { nombre: "Tiabaya", lat: -16.4496891, lng: -71.5880934 },
-                        { ...DESTINO_FINAL }
-                    ]
-                },
-                ruta3: {
-                    nombre: "MTC",
-                    paraderos: [
-                        { nombre: "MTC", lat: -16.4220651, lng: -71.5076676 },
-                        { nombre: "Reservorio Guardia Civil", lat: -16.4255939, lng: -71.5148485 },
-                        { nombre: "Grifo Monterrey", lat: -16.4290732, lng: -71.523866 },
-                        { nombre: "Óvalo Cementerio", lat: -16.4303693, lng: -71.5331784 },
-                        { nombre: "Óvalo Avelino", lat: -16.4265002, lng: -71.5330254 },
-                        { nombre: "Av Los Incas cn Alcides Carreón", lat: -16.4170578, lng: -71.5334866 },
-                        { nombre: "Laive", lat: -16.4188171, lng: -71.5478539 },
-                        { nombre: "Tiabaya", lat: -16.4497443, lng: -71.5881142 },
-                        { ...DESTINO_FINAL }
-                    ]
-                },
-                ruta4: {
-                    nombre: "Puente Santa Rosa",
-                    paraderos: [
-                        { nombre: "Puente Santa Rosa", lat: -16.4099308, lng: -71.5054871 },
-                        { nombre: "Plaza Umachiri", lat: -16.4003871, lng: -71.5069112 },
-                        { nombre: "Óvalo Sepúlveda", lat: -16.3996357, lng: -71.5112349 },
-                        { nombre: "Tablón", lat: -16.4002, lng: -71.5206493 },
-                        { nombre: "Óvalo Mariscal Castilla", lat: -16.4019445, lng: -71.5180315 },
-                        { nombre: "Laive", lat: -16.4187771, lng: -71.5478111 },
-                        { ...DESTINO_FINAL }
-                    ]
-                },
-                ruta5: {
-                    nombre: "Óvalo del Rocoto",
-                    paraderos: [
-                        { nombre: "Óvalo del Rocoto", lat: -16.3832967, lng: -71.524777 },
-                        { nombre: "Políclinico Espíritu Santo", lat: -16.3853403, lng: -71.5210123 },
-                        { nombre: "Av. Progreso con Av. Arequipa", lat: -16.3895666, lng: -71.5268201 },
-                        { nombre: "Puente Grau", lat: -16.3935668, lng: -71.5374629 },
-                        { nombre: "Salaverry", lat: -16.4061582, lng: -71.5398968 },
-                        { nombre: "Laive", lat: -16.4188171, lng: -71.5478539 },
-                        { ...DESTINO_FINAL }
-                    ]
-                },
-                ruta6: {
-                    nombre: "Puente Santa Rosa (Variante)",
-                    paraderos: [
-                        { nombre: "Puente Santa Rosa", lat: -16.4099386, lng: -71.5054923 },
-                        { nombre: "Plaza Umachiri", lat: -16.4004009, lng: -71.5069372 },
-                        { nombre: "Óvalo Sepúlveda", lat: -16.3996578, lng: -71.5112368 },
-                        { nombre: "Tablón", lat: -16.4001777, lng: -71.5206319 },
-                        { nombre: "Óvalo Mariscal Castilla", lat: -16.4019126, lng: -71.5180298 },
-                        { nombre: "Laive", lat: -16.4188171, lng: -71.5478539 },
-                        { ...DESTINO_FINAL }
-                    ]
-                }
-            };
+            const todosLosParaderos = [
+                { nombre: "Calicanto", lat: 16.431743, lng: -71.566625 },
+                { nombre: "Paradero Los Incas", lat: 16.419947, lng: -71.537922 },
+                { nombre: "Laive", lat: 16.419330, lng: -71.547221 },
+                { nombre: "Grifo Monterrey", lat: 16.429060, lng: -71.523532 },
+                { nombre: "MTC", lat: 16.421839, lng: -71.507758 },
+                { nombre: "Plaza Umachiri", lat: 16.399897, lng: -71.506053 },
+                { nombre: "Tablón", lat: 16.399971, lng: -71.520994 },
+                { nombre: "Óvalo Mariscal Castilla", lat: 16.401899, lng: -71.518117 },
+                { nombre: "Salaverry", lat: 16.405828, lng: -71.540267 },
+                { nombre: "Puente Grau", lat: 16.393383, lng: -71.537373 },
+                { nombre: "Av. Progreso con Av. Arequipa", lat: 16.389348, lng: -71.526551 },
+                { nombre: "Políclinico Espíritu Santo", lat: 16.385465, lng: -71.521264 },
+                { nombre: "Óvalo del Rocoto", lat: 16.383281, lng: -71.524581 },
+                { nombre: "Frente a la Iglesia Zamácola", lat: 16.354041, lng: -71.567770 },
+                { nombre: "Plaza Alto Cerro Verde", lat: 16.453535, lng: -71.614016 },
+                { nombre: "Evitamiento con Aviación", lat: -16.3428196, lng: -71.5812588 },
+                { nombre: "Paradero Frente a Grifo Primax", lat: -16.3645424, lng: -71.561284 },
+                { nombre: "Metro", lat: -16.3755462, lng: -71.5578498 },
+                { nombre: "Paradero Socosani", lat: -16.3832443, lng: -71.5564022 },
+                { nombre: "Real Plaza", lat: -16.3893312, lng: -71.5487669 },
+                { nombre: "Mercado 3 de Octubre", lat: -16.4434523, lng: -71.5183875 },
+                { nombre: "Grifo San Fernando", lat: -16.4418899, lng: -71.5287916 },
+                { nombre: "Comisaría Ciudad Mi Trabajo", lat: -16.4482283, lng: -71.5324965 },
+                { nombre: "Colegio Juan Pablo", lat: -16.4475529, lng: -71.5515482 },
+                { nombre: "BCP", lat: -16.4396019, lng: -71.5593696 },
+                { nombre: "Puente Bailey", lat: -16.4434122, lng: -71.5735127 },
+                { nombre: "Tiabaya", lat: -16.4496891, lng: -71.5880934 },
+                { nombre: "Reservorio Guardia Civil", lat: -16.4255939, lng: -71.5148485 },
+                { nombre: "Óvalo Cementerio", lat: -16.4303693, lng: -71.5331784 },
+                { nombre: "Óvalo Avelino", lat: -16.4265002, lng: -71.5330254 },
+                { nombre: "Av Los Incas cn Alcides Carreón", lat: -16.4170578, lng: -71.5334866 },
+                { nombre: "Puente Santa Rosa", lat: -16.4099308, lng: -71.5054871 },
+                { nombre: "Óvalo Sepúlveda", lat: -16.3996357, lng: -71.5112349 },
+                { nombre: "Campamento IMCO - Cerro Verde", lat: -16.559817000051744, lng: -71.59903953841723 }
+            ];
 
             // ============================================================
             //  ESTADO
             // ============================================================
-            let rutaActual = "ruta1";
             let paraderosActuales = [];
             let alarmaActivada = true;
             let vozActivada = true;
@@ -563,17 +490,16 @@
             let watchId = null;
             let RADIO_DETECCION = 80;
             let audioActivado = false;
+            let temporizadorProximo = null;
 
             let notificacionesLlegada = {};
 
             // DOM
-            const rutaSelect = document.getElementById('rutaSelect');
             const container = document.getElementById('paraderoContainer');
             const mensajeDiv = document.getElementById('mensajeAviso');
             const footerReloj = document.getElementById('relojFooter');
             const alarmaStatusSpan = document.getElementById('alarmaStatus');
             const vozStatusSpan = document.getElementById('vozStatus');
-            const rutaNombreSpan = document.getElementById('rutaNombre');
             const gpsDot = document.getElementById('gpsDot');
             const gpsTexto = document.getElementById('gpsTexto');
             const gpsPrecision = document.getElementById('gpsPrecision');
@@ -673,7 +599,7 @@
                         gpsDot.className = 'dot-gps activo';
                         gpsTexto.textContent = '📍 GPS activo';
                         gpsPrecision.textContent = `±${Math.round(precision)}m`;
-                        verificarProximidadGPS();
+                        verificarParaderosCercanos();
                     },
                     function(err) {
                         gpsActivo = false;
@@ -686,48 +612,66 @@
             }
 
             // ============================================================
-            //  VERIFICAR PROXIMIDAD GPS
+            //  VERIFICAR PARADEROS CERCANOS
             // ============================================================
-            function verificarProximidadGPS() {
-                if (!ubicacionActual || !paraderosActuales) return;
+            function verificarParaderosCercanos() {
+                if (!ubicacionActual || !paraderosActuales.length) return;
 
-                let paraderoEncontrado = null;
-                let indexEncontrado = -1;
-                let distanciaMinima = Infinity;
+                // Calcular distancia a todos los paraderos
+                const paraderosConDistancia = paraderosActuales.map(p => {
+                    const dist = calcularDistancia(ubicacionActual.lat, ubicacionActual.lng, p.lat, p.lng);
+                    return { ...p, distancia: Math.round(dist) };
+                });
 
-                for (let i = 0; i < paraderosActuales.length; i++) {
-                    const p = paraderosActuales[i];
-                    if (p.estado === 'pasado') continue;
-                    if (p.lat && p.lng) {
-                        const dist = calcularDistancia(ubicacionActual.lat, ubicacionActual.lng, p.lat, p.lng);
-                        p.distancia = Math.round(dist);
-                        if (dist < RADIO_DETECCION && dist < distanciaMinima) {
-                            distanciaMinima = dist;
-                            paraderoEncontrado = p;
-                            indexEncontrado = i;
-                        }
+                // Ordenar por distancia
+                const paraderosOrdenados = paraderosConDistancia.filter(p => p.estado !== 'pasado');
+                paraderosOrdenados.sort((a, b) => a.distancia - b.distancia);
+
+                // Actualizar distancias en los paraderos originales
+                paraderosConDistancia.forEach(p => {
+                    const original = paraderosActuales.find(o => o.nombre === p.nombre);
+                    if (original) {
+                        original.distancia = p.distancia;
+                    }
+                });
+
+                // Encontrar el paradero más cercano
+                let paraderoCercano = null;
+                let indexCercano = -1;
+
+                for (let i = 0; i < paraderosOrdenados.length; i++) {
+                    const p = paraderosOrdenados[i];
+                    if (p.estado !== 'pasado' && p.distancia < RADIO_DETECCION) {
+                        paraderoCercano = p;
+                        indexCercano = paraderosActuales.findIndex(o => o.nombre === p.nombre);
+                        break;
                     }
                 }
 
-                // ===== ALERTA DE LLEGADA (UNA SOLA VEZ) =====
-                if (paraderoEncontrado && paraderoEncontrado.estado === 'pendiente') {
-                    if (!notificacionesLlegada[indexEncontrado]) {
-                        notificacionesLlegada[indexEncontrado] = true;
-                        paraderoEncontrado.estado = 'alert';
+                // ===== NOTIFICACIÓN DE LLEGADA =====
+                if (paraderoCercano && paraderoCercano.estado === 'pendiente') {
+                    if (!notificacionesLlegada[indexCercano]) {
+                        notificacionesLlegada[indexCercano] = true;
+                        paraderoCercano.estado = 'alert';
 
                         if (!audioActivado) {
                             activarAudio();
                         }
 
                         tocarAlarmaLarga();
-                        const mensajeVoz = `Llegada a ${paraderoEncontrado.nombre}`;
+                        const mensajeVoz = `Llegada a ${paraderoCercano.nombre}`;
                         hablar(mensajeVoz);
                         setTimeout(() => { if (alarmaActivada) tocarBip(600, 0.2, 0.2); }, 1500);
 
-                        mostrarMensajeLlegada(paraderoEncontrado, indexEncontrado);
+                        mostrarMensajeLlegada(paraderoCercano);
+
+                        if (temporizadorProximo) {
+                            clearTimeout(temporizadorProximo);
+                            temporizadorProximo = null;
+                        }
 
                         setTimeout(() => {
-                            paraderoEncontrado.estado = 'pasado';
+                            paraderoCercano.estado = 'pasado';
                             renderizarParaderos();
                             mostrarProximoParadero();
                         }, 5000);
@@ -736,34 +680,34 @@
                     }
                 }
 
-                renderizarParaderos();
-            }
+                // ===== MENSAJE DEL PARADERO MÁS CERCANO =====
+                if (!mensajeDiv.innerHTML.includes('Llegaste a')) {
+                    const paraderosActivos = paraderosActuales.filter(p => p.estado === 'pendiente');
+                    if (paraderosActivos.length > 0) {
+                        const activosConDist = paraderosActivos.map(p => {
+                            const dist = calcularDistancia(ubicacionActual.lat, ubicacionActual.lng, p.lat, p.lng);
+                            return { ...p, distancia: Math.round(dist) };
+                        });
+                        activosConDist.sort((a, b) => a.distancia - b.distancia);
 
-            // ============================================================
-            //  MOSTRAR MENSAJE DE LLEGADA Y PRÓXIMO PARADERO
-            // ============================================================
-            function mostrarMensajeLlegada(paradero, index) {
-                let proximo = null;
-                for (let i = index + 1; i < paraderosActuales.length; i++) {
-                    if (paraderosActuales[i].estado !== 'pasado' && paraderosActuales[i].estado !== 'alert') {
-                        proximo = paraderosActuales[i];
-                        break;
+                        const proximo = activosConDist[0];
+                        if (proximo) {
+                            mensajeDiv.innerHTML = `
+                                <span>📍</span> Paradero más cercano: <strong>${proximo.nombre}</strong>
+                                <span class="proximo-badge">${proximo.distancia}m</span>
+                            `;
+                        }
                     }
                 }
 
-                let html = `<span>🔔</span> Llegaste a <strong>${paradero.nombre}</strong>! ✅`;
+                renderizarParaderos();
+            }
 
-                if (proximo) {
-                    html += `<br><span class="proximo-badge">📍 Próximo: <strong>${proximo.nombre}</strong></span>`;
-                    setTimeout(() => {
-                        const vozProximo = `Próximo paradero: ${proximo.nombre}`;
-                        hablar(vozProximo);
-                    }, 2000);
-                } else {
-                    html += `<br><span class="proximo-badge">🏁 Has llegado al destino final!</span>`;
-                }
-
-                mensajeDiv.innerHTML = html;
+            function mostrarMensajeLlegada(paradero) {
+                mensajeDiv.innerHTML = `
+                    <span>🔔</span> Llegaste a <strong>${paradero.nombre}</strong>! ✅
+                    <br><span style="font-size:0.8rem;color:#a0b0c0;">⏳ Espera 10 segundos para el próximo...</span>
+                `;
             }
 
             function mostrarProximoParadero() {
@@ -772,12 +716,13 @@
                     if (!mensajeDiv.innerHTML.includes('Llegaste a')) {
                         mensajeDiv.innerHTML = `
                             <span>📍</span> Próximo paradero: <strong>${proximo.nombre}</strong>
+                            <span class="proximo-badge">${proximo.distancia}m</span>
                         `;
                     }
                 } else {
                     const todosPasados = paraderosActuales.every(p => p.estado === 'pasado' || p.estado === 'alert');
                     if (todosPasados && paraderosActuales.length > 0) {
-                        mensajeDiv.innerHTML = `<span>✅</span> Llegaste a <strong>Campamento IMCO - Cerro Verde</strong>! 🏁`;
+                        mensajeDiv.innerHTML = `<span>✅</span> Has visitado todos los paraderos!`;
                     }
                 }
             }
@@ -790,11 +735,11 @@
                 const voces = synth.getVoices();
                 const vocesES = voces.filter(v => v.lang.startsWith('es'));
                 if (vocesES.length > 0) {
-                    let voz = vocesES.find(v => v.name.toLowerCase().includes('mexico') || 
-                                                  v.name.toLowerCase().includes('mex') || 
-                                                  v.name.toLowerCase().includes('latino') ||
-                                                  v.name.toLowerCase().includes('samantha') ||
-                                                  v.name.toLowerCase().includes('monica'));
+                    let voz = vocesES.find(v => v.name.toLowerCase().includes('mexico') ||
+                        v.name.toLowerCase().includes('mex') ||
+                        v.name.toLowerCase().includes('latino') ||
+                        v.name.toLowerCase().includes('samantha') ||
+                        v.name.toLowerCase().includes('monica'));
                     if (!voz) voz = vocesES[0];
                     vozSeleccionada = voz;
                 }
@@ -821,7 +766,7 @@
             }
 
             // ============================================================
-            //  AUDIO (BIP)
+            //  AUDIO
             // ============================================================
             function initAudio() {
                 if (!audioCtx) {
@@ -867,46 +812,49 @@
             // ============================================================
             //  FUNCIONES PRINCIPALES
             // ============================================================
-            function cargarRuta(claveRuta) {
-                const data = rutasData[claveRuta];
-                if (!data) return;
-                paraderosActuales = data.paraderos.map((p, index) => ({
+            function cargarParaderos() {
+                paraderosActuales = todosLosParaderos.map((p, index) => ({
                     nombre: p.nombre,
-                    lat: p.lat || null,
-                    lng: p.lng || null,
+                    lat: p.lat,
+                    lng: p.lng,
                     estado: 'pendiente',
-                    distancia: null,
-                    esDestino: index === data.paraderos.length - 1
+                    distancia: null
                 }));
-                rutaNombreSpan.textContent = data.nombre;
                 notificacionesLlegada = {};
+
+                if (temporizadorProximo) {
+                    clearTimeout(temporizadorProximo);
+                    temporizadorProximo = null;
+                }
+
                 renderizarParaderos();
-                mostrarProximoParadero();
+                mensajeDiv.innerHTML = `<span>📍</span> Buscando paradero más cercano...`;
             }
 
             function renderizarParaderos() {
                 let html = '';
-                let proximoIndex = -1;
-
-                for (let i = 0; i < paraderosActuales.length; i++) {
-                    if (paraderosActuales[i].estado === 'pendiente') {
-                        proximoIndex = i;
-                        break;
+                
+                let paraderosConDist = paraderosActuales.map(p => {
+                    let dist = null;
+                    if (ubicacionActual && p.lat && p.lng) {
+                        dist = calcularDistancia(ubicacionActual.lat, ubicacionActual.lng, p.lat, p.lng);
                     }
-                }
+                    return { ...p, distanciaCalc: dist ? Math.round(dist) : null };
+                });
+                
+                paraderosConDist.sort((a, b) => {
+                    if (a.distanciaCalc === null) return 1;
+                    if (b.distanciaCalc === null) return -1;
+                    return a.distanciaCalc - b.distanciaCalc;
+                });
 
-                for (let i = 0; i < paraderosActuales.length; i++) {
-                    const p = paraderosActuales[i];
+                let contador = 0;
+                for (const p of paraderosConDist) {
+                    contador++;
                     let claseCard = 'paradero-card';
                     let dotClase = 'dot';
                     let estadoTexto = '';
                     let distanciaHtml = '';
-                    let badgeHtml = '';
-
-                    if (p.esDestino) {
-                        badgeHtml = `<span class="badge-destino">Destino</span>`;
-                        claseCard += ' destino';
-                    }
 
                     if (p.estado === 'alert') {
                         claseCard += ' alert';
@@ -916,25 +864,23 @@
                         claseCard += ' passed';
                         dotClase += ' gris';
                         estadoTexto = 'Pasado';
-                    } else if (i === proximoIndex && p.estado === 'pendiente') {
+                    } else if (contador === 1 && p.estado === 'pendiente') {
                         claseCard += ' proximo';
                         dotClase += ' azul';
-                        estadoTexto = '⬅️ Próximo';
-                        badgeHtml += `<span class="badge-proximo">Próximo</span>`;
+                        estadoTexto = '⬅️ Cercano';
                     } else if (p.estado === 'pendiente') {
                         dotClase += ' verde';
                         estadoTexto = 'Pendiente';
                     }
 
-                    if (p.distancia !== null && p.distancia !== undefined) {
-                        distanciaHtml = `<span class="distancia">${p.distancia}m</span>`;
+                    if (p.distanciaCalc !== null) {
+                        distanciaHtml = `<span class="distancia">${p.distanciaCalc}m</span>`;
                     }
 
                     html += `
                         <div class="${claseCard}">
                             <div class="paradero-info">
-                                <span class="paradero-nombre ${p.esDestino ? 'destino-label' : ''}">${p.nombre}</span>
-                                ${badgeHtml}
+                                <span class="paradero-nombre">${p.nombre}</span>
                                 ${distanciaHtml}
                             </div>
                             <div class="estado-badge">
@@ -961,21 +907,16 @@
             //  CONTROLES
             // ============================================================
             function reiniciarRuta() {
-                cargarRuta(rutaSelect.value);
+                if (temporizadorProximo) {
+                    clearTimeout(temporizadorProximo);
+                    temporizadorProximo = null;
+                }
+                cargarParaderos();
                 renderizarParaderos();
-                mostrarProximoParadero();
                 notificacionesLlegada = {};
                 if (synth) synth.cancel();
                 menuContenido.classList.remove('abierto');
-            }
-
-            function cambiarRuta() {
-                rutaActual = rutaSelect.value;
-                cargarRuta(rutaActual);
-                renderizarParaderos();
-                mostrarProximoParadero();
-                notificacionesLlegada = {};
-                if (synth) synth.cancel();
+                mensajeDiv.innerHTML = `<span>📍</span> Buscando paradero más cercano...`;
             }
 
             function toggleSilenciar() {
@@ -1002,22 +943,10 @@
             reiniciarBtn.addEventListener('click', reiniciarRuta);
             silenciarBtn.addEventListener('click', toggleSilenciar);
             vozBtn.addEventListener('click', toggleVoz);
-            rutaSelect.addEventListener('change', cambiarRuta);
 
             // ============================================================
             //  INICIALIZACIÓN
             // ============================================================
-            function llenarSelectRutas() {
-                rutaSelect.innerHTML = '';
-                for (const [clave, data] of Object.entries(rutasData)) {
-                    const option = document.createElement('option');
-                    option.value = clave;
-                    option.textContent = data.nombre;
-                    rutaSelect.appendChild(option);
-                }
-                rutaSelect.value = 'ruta1';
-            }
-
             function iniciarIntervalos() {
                 if (intervaloReloj) clearInterval(intervaloReloj);
                 if (intervaloVerificacion) clearInterval(intervaloVerificacion);
@@ -1029,18 +958,14 @@
 
                 intervaloVerificacion = setInterval(() => {
                     if (gpsActivo && ubicacionActual) {
-                        verificarProximidadGPS();
+                        verificarParaderosCercanos();
                     }
                 }, 3000);
             }
 
             function init() {
-                llenarSelectRutas();
-                rutaActual = 'ruta1';
-                rutaSelect.value = 'ruta1';
-                cargarRuta('ruta1');
+                cargarParaderos();
                 renderizarParaderos();
-                mostrarProximoParadero();
                 iniciarIntervalos();
                 actualizarVozStatus();
 
@@ -1061,6 +986,10 @@
                 if (watchId) navigator.geolocation.clearWatch(watchId);
                 if (audioCtx) audioCtx.close();
                 if (synth) synth.cancel();
+                if (temporizadorProximo) {
+                    clearTimeout(temporizadorProximo);
+                    temporizadorProximo = null;
+                }
             });
 
         })();
