@@ -255,11 +255,18 @@
             background: #0d1210;
             opacity: 0.5;
         }
-        .paradero-card.proximo {
-            border-left-color: #2a7ad8;
-            background: #0d1820;
-            box-shadow: 0 0 15px rgba(42, 122, 216, 0.05), 0 0 0 1px rgba(42, 122, 216, 0.1);
+
+        /* ===== ESTILO DEL PARADERO MÁS CERCANO ===== */
+        .paradero-card.mas-cercano {
+            border-left-color: #f5c842;
+            background: #1a1a0a;
+            box-shadow: 0 0 30px rgba(245, 200, 66, 0.08), 0 0 0 1px rgba(245, 200, 66, 0.15);
         }
+        .paradero-card.mas-cercano .paradero-nombre {
+            color: #f5c842 !important;
+            font-weight: 700;
+        }
+
         .paradero-info {
             display: flex;
             align-items: center;
@@ -268,7 +275,7 @@
             flex: 1 1 60%;
         }
         .paradero-nombre {
-            font-weight: 700;
+            font-weight: 600;
             font-size: 1.1rem !important;
             color: #ffffff !important;
             min-width: 50px;
@@ -299,6 +306,7 @@
         .dot.naranja { background: #f5a623; animation: pulse-dot 0.8s infinite; }
         .dot.azul { background: #2a7ad8; }
         .dot.gris { background: #4a4a5a; }
+        .dot.amarillo { background: #f5c842; animation: pulse-dot 1.2s infinite; }
         @keyframes pulse-dot {
             0% { opacity: 0.4; transform: scale(0.8); }
             50% { opacity: 1; transform: scale(1.4); }
@@ -330,6 +338,14 @@
             border-radius: 40px;
             border: 1px solid rgba(42,122,216,0.3);
             font-size: 0.9rem;
+        }
+        .mensaje-aviso .cercano-badge {
+            background: rgba(245, 200, 66, 0.2);
+            padding: 2px 12px;
+            border-radius: 40px;
+            border: 1px solid rgba(245, 200, 66, 0.3);
+            font-size: 0.9rem;
+            color: #f5c842;
         }
         .footer-time {
             display: flex;
@@ -435,25 +451,11 @@
             "use strict";
 
             // ============================================================
-            //  LISTA DE PARADEROS
+            //  LISTA DE PARADEROS (TODAS CON LATITUD NEGATIVA)
             // ============================================================
             const todosLosParaderos = [
-                { nombre: "Calicanto", lat: 16.431743, lng: -71.566625 },
-                { nombre: "Paradero Los Incas", lat: 16.419947, lng: -71.537922 },
-                { nombre: "Laive", lat: 16.419330, lng: -71.547221 },
-                { nombre: "Grifo Monterrey", lat: 16.429060, lng: -71.523532 },
-                { nombre: "MTC", lat: 16.421839, lng: -71.507758 },
-                { nombre: "Plaza Umachiri", lat: 16.399897, lng: -71.506053 },
-                { nombre: "Tablón", lat: 16.399971, lng: -71.520994 },
-                { nombre: "Óvalo Mariscal Castilla", lat: 16.401899, lng: -71.518117 },
-                { nombre: "Salaverry", lat: 16.405828, lng: -71.540267 },
-                { nombre: "Puente Grau", lat: 16.393383, lng: -71.537373 },
-                { nombre: "Av. Progreso con Av. Arequipa", lat: 16.389348, lng: -71.526551 },
-                { nombre: "Políclinico Espíritu Santo", lat: 16.385465, lng: -71.521264 },
-                { nombre: "Óvalo del Rocoto", lat: 16.383281, lng: -71.524581 },
-                { nombre: "Frente a la Iglesia Zamácola", lat: 16.354041, lng: -71.567770 },
-                { nombre: "Plaza Alto Cerro Verde", lat: 16.453535, lng: -71.614016 },
                 { nombre: "Evitamiento con Aviación", lat: -16.3428196, lng: -71.5812588 },
+                { nombre: "Frente a la Iglesia Zamácola", lat: -16.3541564, lng: -71.5678788 },
                 { nombre: "Paradero Frente a Grifo Primax", lat: -16.3645424, lng: -71.561284 },
                 { nombre: "Metro", lat: -16.3755462, lng: -71.5578498 },
                 { nombre: "Paradero Socosani", lat: -16.3832443, lng: -71.5564022 },
@@ -465,12 +467,26 @@
                 { nombre: "BCP", lat: -16.4396019, lng: -71.5593696 },
                 { nombre: "Puente Bailey", lat: -16.4434122, lng: -71.5735127 },
                 { nombre: "Tiabaya", lat: -16.4496891, lng: -71.5880934 },
+                { nombre: "MTC", lat: -16.4220651, lng: -71.5076676 },
                 { nombre: "Reservorio Guardia Civil", lat: -16.4255939, lng: -71.5148485 },
+                { nombre: "Grifo Monterrey", lat: -16.429060, lng: -71.523532 },
                 { nombre: "Óvalo Cementerio", lat: -16.4303693, lng: -71.5331784 },
                 { nombre: "Óvalo Avelino", lat: -16.4265002, lng: -71.5330254 },
                 { nombre: "Av Los Incas cn Alcides Carreón", lat: -16.4170578, lng: -71.5334866 },
+                { nombre: "Laive", lat: -16.419330, lng: -71.547221 },
                 { nombre: "Puente Santa Rosa", lat: -16.4099308, lng: -71.5054871 },
+                { nombre: "Plaza Umachiri", lat: -16.4003871, lng: -71.5069112 },
                 { nombre: "Óvalo Sepúlveda", lat: -16.3996357, lng: -71.5112349 },
+                { nombre: "Tablón", lat: -16.4002, lng: -71.5206493 },
+                { nombre: "Óvalo Mariscal Castilla", lat: -16.4019445, lng: -71.5180315 },
+                { nombre: "Óvalo del Rocoto", lat: -16.3832967, lng: -71.524777 },
+                { nombre: "Políclinico Espíritu Santo", lat: -16.3853403, lng: -71.5210123 },
+                { nombre: "Av. Progreso con Av. Arequipa", lat: -16.3895666, lng: -71.5268201 },
+                { nombre: "Puente Grau", lat: -16.3935668, lng: -71.5374629 },
+                { nombre: "Salaverry", lat: -16.4061582, lng: -71.5398968 },
+                { nombre: "Plaza Alto Cerro Verde", lat: -16.453535, lng: -71.614016 },
+                { nombre: "Calicanto", lat: -16.431743, lng: -71.566625 },
+                { nombre: "Paradero Los Incas", lat: -16.419947, lng: -71.537922 },
                 { nombre: "Campamento IMCO - Cerro Verde", lat: -16.559817000051744, lng: -71.59903953841723 }
             ];
 
@@ -617,17 +633,14 @@
             function verificarParaderosCercanos() {
                 if (!ubicacionActual || !paraderosActuales.length) return;
 
-                // Calcular distancia a todos los paraderos
                 const paraderosConDistancia = paraderosActuales.map(p => {
                     const dist = calcularDistancia(ubicacionActual.lat, ubicacionActual.lng, p.lat, p.lng);
                     return { ...p, distancia: Math.round(dist) };
                 });
 
-                // Ordenar por distancia
                 const paraderosOrdenados = paraderosConDistancia.filter(p => p.estado !== 'pasado');
                 paraderosOrdenados.sort((a, b) => a.distancia - b.distancia);
 
-                // Actualizar distancias en los paraderos originales
                 paraderosConDistancia.forEach(p => {
                     const original = paraderosActuales.find(o => o.nombre === p.nombre);
                     if (original) {
@@ -635,7 +648,7 @@
                     }
                 });
 
-                // Encontrar el paradero más cercano
+                // ===== Encontrar el más cercano =====
                 let paraderoCercano = null;
                 let indexCercano = -1;
 
@@ -663,7 +676,10 @@
                         hablar(mensajeVoz);
                         setTimeout(() => { if (alarmaActivada) tocarBip(600, 0.2, 0.2); }, 1500);
 
-                        mostrarMensajeLlegada(paraderoCercano);
+                        mensajeDiv.innerHTML = `
+                            <span>🔔</span> Llegaste a <strong>${paraderoCercano.nombre}</strong>! ✅
+                            <br><span style="font-size:0.8rem;color:#a0b0c0;">⏳ Espera 10 segundos para el próximo...</span>
+                        `;
 
                         if (temporizadorProximo) {
                             clearTimeout(temporizadorProximo);
@@ -694,7 +710,7 @@
                         if (proximo) {
                             mensajeDiv.innerHTML = `
                                 <span>📍</span> Paradero más cercano: <strong>${proximo.nombre}</strong>
-                                <span class="proximo-badge">${proximo.distancia}m</span>
+                                <span class="cercano-badge">${proximo.distancia}m</span>
                             `;
                         }
                     }
@@ -703,20 +719,13 @@
                 renderizarParaderos();
             }
 
-            function mostrarMensajeLlegada(paradero) {
-                mensajeDiv.innerHTML = `
-                    <span>🔔</span> Llegaste a <strong>${paradero.nombre}</strong>! ✅
-                    <br><span style="font-size:0.8rem;color:#a0b0c0;">⏳ Espera 10 segundos para el próximo...</span>
-                `;
-            }
-
             function mostrarProximoParadero() {
                 const proximo = paraderosActuales.find(p => p.estado === 'pendiente');
                 if (proximo) {
                     if (!mensajeDiv.innerHTML.includes('Llegaste a')) {
                         mensajeDiv.innerHTML = `
                             <span>📍</span> Próximo paradero: <strong>${proximo.nombre}</strong>
-                            <span class="proximo-badge">${proximo.distancia}m</span>
+                            <span class="cercano-badge">${proximo.distancia}m</span>
                         `;
                     }
                 } else {
@@ -833,7 +842,7 @@
 
             function renderizarParaderos() {
                 let html = '';
-                
+
                 let paraderosConDist = paraderosActuales.map(p => {
                     let dist = null;
                     if (ubicacionActual && p.lat && p.lng) {
@@ -841,12 +850,21 @@
                     }
                     return { ...p, distanciaCalc: dist ? Math.round(dist) : null };
                 });
-                
+
                 paraderosConDist.sort((a, b) => {
                     if (a.distanciaCalc === null) return 1;
                     if (b.distanciaCalc === null) return -1;
                     return a.distanciaCalc - b.distanciaCalc;
                 });
+
+                // ===== Identificar el más cercano =====
+                let masCercanoIndex = -1;
+                for (let i = 0; i < paraderosConDist.length; i++) {
+                    if (paraderosConDist[i].estado === 'pendiente') {
+                        masCercanoIndex = i;
+                        break;
+                    }
+                }
 
                 let contador = 0;
                 for (const p of paraderosConDist) {
@@ -856,7 +874,12 @@
                     let estadoTexto = '';
                     let distanciaHtml = '';
 
-                    if (p.estado === 'alert') {
+                    // ===== Marcar el más cercano con color amarillo =====
+                    if (contador === masCercanoIndex + 1 && p.estado === 'pendiente') {
+                        claseCard += ' mas-cercano';
+                        dotClase += ' amarillo';
+                        estadoTexto = '⭐ Más cercano';
+                    } else if (p.estado === 'alert') {
                         claseCard += ' alert';
                         dotClase += ' naranja';
                         estadoTexto = '¡Ahora!';
@@ -864,10 +887,6 @@
                         claseCard += ' passed';
                         dotClase += ' gris';
                         estadoTexto = 'Pasado';
-                    } else if (contador === 1 && p.estado === 'pendiente') {
-                        claseCard += ' proximo';
-                        dotClase += ' azul';
-                        estadoTexto = '⬅️ Cercano';
                     } else if (p.estado === 'pendiente') {
                         dotClase += ' verde';
                         estadoTexto = 'Pendiente';
